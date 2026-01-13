@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* BuildClub-like theme system (clean + playful) */
+
+@layer base {
+  :root {
+    /* Paper background + ink */
+    --background: 45 40% 97%;
+    --foreground: 0 0% 8%;
+
+    /* Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    /* Primary (ink) */
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary (lime band) */
+    --secondary: 70 96% 80%;
+    --secondary-foreground: 0 0% 10%;
+
+    /* Muted / Accent */
+    --muted: 45 20% 93%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 150 45% 92%;
+    --accent-foreground: 0 0% 10%;
+
+    /* System */
+    --destructive: 0 80% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 88%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 20%;
+
+    --radius: 1.1rem;
+
+    /* Candlestick */
+    --candle-green: 142 71% 42%;
+    --candle-green-dark: 142 65% 28%;
+    --candle-red: 0 84% 60%;
+    --candle-red-dark: 0 65% 40%;
+
+    /* Chart grid */
+    --chart-grid: 0 0% 92%;
+
+    /* Footer */
+    --footer: 45 30% 96%;
+
+    /* Sidebar (unused but keep consistent) */
+    --sidebar-background: 45 40% 97%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 45 20% 93%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 20%;
+  }
+
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 96%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 0 0% 96%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 70 60% 22%;
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 96%;
+
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
+    --ring: 0 0% 80%;
+
+    --candle-green: 142 62% 50%;
+    --candle-green-dark: 142 70% 72%;
+    --candle-red: 0 72% 58%;
+    --candle-red-dark: 0 82% 78%;
+
+    --chart-grid: 0 0% 18%;
+    --footer: 0 0% 10%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+      "Segoe UI Emoji";
+  }
+
+  /* Normalize headings (site-wide) */
+  h1 { @apply text-4xl sm:text-5xl font-semibold tracking-tight; }
+  h2 { @apply text-2xl sm:text-3xl font-semibold tracking-tight; }
+  h3 { @apply text-xl sm:text-2xl font-semibold; }
+}
+
+@layer components {
+  /* Page texture */
+  .bc-page {
+    @apply relative overflow-x-hidden;
+  }
+  .bc-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.22;
+    background-image: radial-gradient(rgba(0,0,0,0.12) 0.6px, transparent 0.6px);
+    background-size: 14px 14px;
+  }
+
+  /* Spacing rhythm */
+  .bc-section { @apply relative z-10 py-14 sm:py-20; }
+  .bc-container { @apply container px-4 sm:px-6; }
+
+  /* BuildClub lime band sections */
+  .bc-section-lime {
+    background: color-mix(in srgb, hsl(var(--secondary)) 55%, transparent);
+  }
+
+  /* Cards / Pills */
+  .bc-card { @apply bg-card border border-border rounded-2xl shadow-sm; }
+  .bc-card-soft { @apply bg-muted/40 border border-border rounded-2xl; }
+
+  .bc-pill { @apply inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium; }
+  .bc-pill-dark { @apply inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-semibold shadow-sm; }
+
+  /* Micro-animations */
+  .bc-hoverlift { @apply transition-transform duration-200 ease-out hover:-translate-y-0.5; }
+  .bc-hovershadow { @apply transition-shadow duration-200 ease-out hover:shadow-md; }
+
+  /* Sticky note palette (playful but clean) */
+  .bc-sticky { @apply rounded-2xl border border-border shadow-sm; }
+  .bc-sticky-yellow { background: #fff7c2; }
+  .bc-sticky-mint { background: #dff7ea; }
+  .bc-sticky-pink { background: #ffe0e6; }
+}
+
