@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const skillCards = [
   {
@@ -113,7 +113,6 @@ function SkillNote({
       onMouseLeave={onLeave}
       className={[
         "relative overflow-hidden rounded-2xl",
-        // BuildClub-like card feel:
         "bg-white/92 dark:bg-white/6",
         "border border-black/10 dark:border-white/10",
         "backdrop-blur-md",
@@ -122,19 +121,13 @@ function SkillNote({
         active ? `${t.ring} ${t.glow}` : "ring-black/5 dark:ring-white/10",
       ].join(" ")}
       style={style}
-      whileHover={
-        hoverable
-          ? { rotate: 0, scale: 1.045, y: -7 }
-          : undefined
-      }
+      whileHover={hoverable ? { rotate: 0, scale: 1.045, y: -7 } : undefined}
       transition={{ type: "spring", stiffness: 260, damping: 18 }}
     >
-      {/* top accent line */}
       <div className="absolute left-0 top-0 w-full h-[3px]">
         <div className={`h-full w-full ${t.line}`} />
       </div>
 
-      {/* soft corner tint */}
       <div
         className="absolute -top-20 -left-20 h-52 w-52 rounded-full opacity-40 blur-2xl"
         style={{
@@ -191,7 +184,6 @@ function SkillNote({
           ))}
         </div>
 
-        {/* tiny “tone chip” (BuildClub vibe, clean) */}
         <div className="mt-4">
           <span
             className={[
@@ -213,14 +205,59 @@ function SkillNote({
 const SkillsSection = () => {
   const [hovered, setHovered] = useState<number | null>(null);
   const mobileRot = useMemo(() => [-2, 2, -1, 2], []);
+  const deckRef = useRef<HTMLDivElement | null>(null);
+  const [deckSize, setDeckSize] = useState({ w: 0, h: 0 });
+
+  // Measure the deck so we can scale the whole "scene" to never overflow
+  useEffect(() => {
+    if (!deckRef.current) return;
+
+    const el = deckRef.current;
+    const ro = new ResizeObserver((entries) => {
+      const r = entries[0]?.contentRect;
+      if (!r) return;
+      setDeckSize({ w: r.width, h: r.height });
+    });
+
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // IMPORTANT: baseline scene size (fits your exact original positions)
+  // We scale this entire scene down when the container is smaller.
+  const BASE_W = 720; // maxLeft(354) + cardW(330) + margin
+  const BASE_H = 600; // gives bottom room so it never clips in smaller panels
+  const HOVER_FACTOR = 1.045; // keep your original hover scale feel
+  const SAFE_PAD = 18; // internal safe padding (prevents edges clipping)
+
+  const sceneScale = useMemo(() => {
+    const w = deckSize.w || 1;
+    const h = deckSize.h || 1;
+
+    const availW = Math.max(1, w - SAFE_PAD * 2);
+    const availH = Math.max(1, h - SAFE_PAD * 2);
+
+    const sW = availW / (BASE_W * HOVER_FACTOR);
+    const sH = availH / (BASE_H * HOVER_FACTOR);
+
+    return Math.min(1, sW, sH);
+  }, [deckSize.w, deckSize.h]);
+
+  // Center scene horizontally a bit like your screenshot (not spread)
+  const sceneOffset = useMemo(() => {
+    const w = deckSize.w || 0;
+    const scaledW = BASE_W * sceneScale;
+    const left = Math.max(SAFE_PAD, (w - scaledW) / 2);
+    return { left, top: SAFE_PAD };
+  }, [deckSize.w, sceneScale]);
 
   return (
     <section id="skills" className="bc-section bc-section-lime">
       <div className="bc-container">
         <div className="bc-card p-6 sm:p-10 relative overflow-hidden">
-          {/* ✅ Light mode background: DO NOT TOUCH (kept exactly by not adding anything here) */}
+          {/* ✅ Light mode background: DO NOT TOUCH */}
 
-          {/* ✅ Dark mode background: only dark gets custom bg */}
+          {/* ✅ Dark mode background: only dark gets custom bg (kept as-is) */}
           <div className="absolute inset-0 pointer-events-none hidden dark:block">
             <div className="absolute inset-0 bg-[#07090c]" />
             <div
@@ -311,32 +348,48 @@ const SkillsSection = () => {
                   </div>
                 </div>
 
-                {/* ✅ DESKTOP: clean deck panel + hover bring front */}
+                {/* ✅ DESKTOP: SAME OVERLAP STYLE, but scaled scene so it NEVER overflows */}
                 <div className="hidden lg:block">
-                  <div className="relative h-[520px]">
+                  <div
+                    ref={deckRef}
+                    className="relative h-[520px] w-full overflow-hidden rounded-3xl"
+                  >
                     <div className="absolute inset-0 rounded-3xl border border-black/5 dark:border-white/10 bg-white/45 dark:bg-white/5 backdrop-blur-md" />
 
-                    {skillCards.map((card, i) => {
-                      const isHovered = hovered === i;
-                      return (
-                        <SkillNote
-                          key={i}
-                          card={card}
-                          active={isHovered}
-                          hoverable
-                          onEnter={() => setHovered(i)}
-                          onLeave={() => setHovered(null)}
-                          style={{
-                            position: "absolute",
-                            top: card.pos.top,
-                            left: card.pos.left,
-                            width: 330,
-                            transform: `rotate(${card.rotation}deg)`,
-                            zIndex: isHovered ? 99 : card.z,
-                          }}
-                        />
-                      );
-                    })}
+                    {/* scaled "scene" */}
+                    <div
+                      className="absolute"
+                      style={{
+                        left: sceneOffset.left,
+                        top: sceneOffset.top,
+                        width: BASE_W,
+                        height: BASE_H,
+                        transform: `scale(${sceneScale})`,
+                        transformOrigin: "top left",
+                      }}
+                    >
+                      {skillCards.map((card, i) => {
+                        const isHovered = hovered === i;
+                        return (
+                          <SkillNote
+                            key={i}
+                            card={card}
+                            active={isHovered}
+                            hoverable
+                            onEnter={() => setHovered(i)}
+                            onLeave={() => setHovered(null)}
+                            style={{
+                              position: "absolute",
+                              top: card.pos.top,
+                              left: card.pos.left,
+                              width: 330,
+                              transform: `rotate(${card.rotation}deg)`,
+                              zIndex: isHovered ? 99 : card.z,
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
