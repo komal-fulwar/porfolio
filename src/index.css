@@ -142,6 +142,9 @@
   .bc-section-lime {
     background: color-mix(in srgb, hsl(var(--secondary)) 55%, transparent);
   }
+  .dark .bc-section-lime {
+  background: transparent;
+  }
 
   /* Cards / Pills */
   .bc-card { @apply bg-card border border-border rounded-2xl shadow-sm; }
@@ -160,4 +163,6 @@
   .bc-sticky-mint { background: #dff7ea; }
   .bc-sticky-pink { background: #ffe0e6; }
 }
+
+
 

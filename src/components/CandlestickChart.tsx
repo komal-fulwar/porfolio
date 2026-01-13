@@ -1,10 +1,14 @@
 import { useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+// ✅ avatar image in SAME folder as this file
+// Change the filename here if yours is different.
+import avatarImg from "./avatar.png";
+
 type CandleType = "up" | "down";
 
 interface Candle {
-  year: number;
+  year: string;
   type: CandleType;
   intensity: number;
   level: number; // 0(Start) -> 4.5(Moon-ish)
@@ -15,33 +19,120 @@ interface Candle {
 
 const MAX_LEVEL = 4.5;
 
+/**
+ * ✅ Option A content
+ * ✅ 2025 last candle is GREEN (down first, then up)
+ */
 const DATA: Candle[] = [
-  // 2019
-  { year: 2019, type: "up", intensity: 22, level: 1.0, title: "2019 — Learning Begins", subtitle: "First Internship", description: "Built foundational experience and curiosity; early exposure to real-world work." },
-  { year: 2019, type: "down", intensity: 16, level: 1.0, title: "2019 — Learning Curve", subtitle: "Adjustment Phase", description: "Early challenges adapting to professional environments." },
-
   // 2020
-  { year: 2020, type: "up", intensity: 26, level: 1.35, title: "2020 — Transition & Challenge", subtitle: "Graduated with Honors", description: "Completed graduation successfully and prepared for next steps." },
-  { year: 2020, type: "down", intensity: 24, level: 1.35, title: "2020 — The Pandemic Layoff", subtitle: "Unexpected Shift", description: "A sudden shift after graduation; learned adaptability and self-reliance." },
+  {
+    year: "2020",
+    type: "up",
+    intensity: 26,
+    level: 1.35,
+    title: "Spark of curiosity",
+    subtitle: "COVID → curiosity",
+    description:
+      "A simple tech idea during COVID sparked my curiosity toward startups, problem-solving, and technology — the beginning of my journey.",
+  },
+  {
+    year: "2020",
+    type: "down",
+    intensity: 22,
+    level: 1.35,
+    title: "Starting From Zero in a Tier-2 City",
+    subtitle: "No mentors, no map",
+    description:
+      "Had ideas and ambition but lacked execution frameworks, technical knowledge, and direction — figuring everything out alone from scratch.",
+  },
 
   // 2021
-  { year: 2021, type: "up", intensity: 32, level: 1.9, title: "2021 — Imposter Syndrome", subtitle: "Dream Job Offer", description: "Despite career progress, mental and emotional fatigue surfaced." },
-  { year: 2021, type: "down", intensity: 28, level: 1.9, title: "2021 — Burnout", subtitle: "Overwork & Stress", description: "Overwork, stress, and work-life imbalance took its toll." },
+  {
+    year: "2021",
+    type: "up",
+    intensity: 32,
+    level: 2.1,
+    title: "First Real-World Exposure",
+    subtitle: "Programs + communities",
+    description:
+      "Entered real communities and programs, gaining hands-on exposure by executing initiatives and learning fast in public.",
+  },
+  {
+    year: "2021",
+    type: "down",
+    intensity: 26,
+    level: 2.1,
+    title: "Too Many Paths, No Map",
+    subtitle: "Fast growth, unclear direction",
+    description:
+      "While executing and managing large-scale initiatives, I was personally unsure about long-term direction — without the right mentors to navigate choices.",
+  },
 
-  // 2022
-  { year: 2022, type: "up", intensity: 36, level: 2.55, title: "2022 — Dual Phase", subtitle: "Skill Stacking", description: "New creative outlet, diversifying skills, growth mindset." },
-  { year: 2022, type: "down", intensity: 30, level: 2.55, title: "2022 — Burnout Phase", subtitle: "Lesson", description: "Motivation dip, questioning path, mental load heavy." },
-
-  // 2023
-  { year: 2023, type: "up", intensity: 42, level: 3.15, title: "2023 — Team Conflicts", subtitle: "Resilience & Leadership", description: "Developed resilience, leadership maturity, and conflict-handling experience." },
-  { year: 2023, type: "down", intensity: 34, level: 3.15, title: "2023 — Team Conflicts", subtitle: "Lesson", description: "Team conflicts, difficult decisions, emotional toll." },
+  // 2022-23
+  {
+    year: "2022-23",
+    type: "up",
+    intensity: 40,
+    level: 3.05,
+    title: "Entering Web3 With Lumos Labs",
+    subtitle: "Ecosystem work",
+    description:
+      "My first deep exposure to Web3 — community, hackathons, partnerships, and growth loops. Learned how ecosystems move and how narratives form.",
+  },
+  {
+    year: "2022-23",
+    type: "down",
+    intensity: 30,
+    level: 3.05,
+    title: "Bull Dreams, Bear Lessons",
+    subtitle: "Cycles hit different",
+    description:
+      "Bull to bear taught hard lessons — watching narratives rise and disappear overnight was unsettling, but it taught me to build with conviction.",
+  },
 
   // 2024
-  { year: 2024, type: "up", intensity: 50, level: 3.75, title: "2024 — Got Promoted!", subtitle: "Win", description: "Recognition for effort; stepping into leadership and impact roles." },
-  { year: 2024, type: "down", intensity: 38, level: 3.75, title: "2024 — Pressure Phase", subtitle: "Lesson", description: "New responsibilities and the weight of expectations." },
+  {
+    year: "2024",
+    type: "up",
+    intensity: 52,
+    level: 4.05,
+    title: "Going Global with Capx AI",
+    subtitle: "AI × builders, end-to-end",
+    description:
+      "Led growth and ecosystem efforts at Capx AI — owning ideation → builder outreach → operations → demo day, while continuously upskilling in AI.",
+  },
+  {
+    year: "2024",
+    type: "down",
+    intensity: 36,
+    level: 4.05,
+    title: "New model everyday!!!!",
+    subtitle: "Acceleration + narrative shifts",
+    description:
+      "First deep year in AI during extreme ecosystem acceleration. Learned to stay grounded, execute consistently, and build conviction beyond hype.",
+  },
 
-  // 2025 (ONLY UP)
-  { year: 2025, type: "up", intensity: 62, level: 4.25, title: "2025 — Trending Up", subtitle: "Win", description: "Stability and momentum return; entering a strong growth phase toward the Moon." },
+  // 2025 (RED then GREEN - last candle GREEN)
+  {
+    year: "2025",
+    type: "down",
+    intensity: 30,
+    level: 4.2,
+    title: "COVID rethink on sustainability",
+    subtitle: "Reset + recovery",
+    description:
+      "Contracted COVID during peak execution — forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
+  },
+  {
+    year: "2025",
+    type: "up",
+    intensity: 58,
+    level: 4.2,
+    title: "deAI era with Aethir",
+    subtitle: "One-woman GTM engine",
+    description:
+      "Built Aethir India end-to-end across brand, content, community, partnerships, IRL — driving early B2B, ecosystem, and institutional momentum in the deAI era.",
+  },
 ];
 
 function clamp(n: number, min: number, max: number) {
@@ -51,15 +142,33 @@ function clamp(n: number, min: number, max: number) {
 function IconMoon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 function IconGrowth() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M4 17l6-6 4 4 6-8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M20 7v6h-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M4 17l6-6 4 4 6-8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 7v6h-6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -74,7 +183,12 @@ function IconStable() {
 function IconLearning() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M4 19V7l8-3 8 3v12l-8-3-8 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path
+        d="M4 19V7l8-3 8 3v12l-8-3-8 3Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
       <path d="M12 4v12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
@@ -103,6 +217,7 @@ export default function CandlestickChart() {
 
   const years = useMemo(() => Array.from(new Set(DATA.map((d) => d.year))), []);
 
+  // ✅ MOBILE FIT: tighter + smaller, NO horizontal scroll
   const plotHeight = isMobile ? 250 : 340;
   const leftAxisWidth = isMobile ? 74 : 165;
 
@@ -113,8 +228,6 @@ export default function CandlestickChart() {
 
   const perYearOffset = isMobile ? 7 : 18;
   const upDownOffsetY = isMobile ? 7 : 12;
-
-  const hasDownForYear = (year: number) => DATA.some((d) => d.year === year && d.type === "down");
 
   const yAxis = useMemo(
     () => [
@@ -127,10 +240,32 @@ export default function CandlestickChart() {
     []
   );
 
+  const getIsDark = () =>
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark");
+
+  const dottedLine = (dir: "x" | "y") => {
+    const dot = getIsDark() ? "rgba(255,255,255,0.22)" : "rgba(0,0,0,0.18)";
+    return {
+      backgroundImage:
+        dir === "y"
+          ? `repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, ${dot} 6px, ${dot} 8px)`
+          : `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, ${dot} 6px, ${dot} 8px)`,
+    };
+  };
+
   const showTooltip = (key: string, candle: Candle, el: HTMLElement | null) => {
-    if (!el || isMobile) return;
+    if (!el || isMobile) return; // ✅ no hover tooltip on mobile
     const rect = el.getBoundingClientRect();
     setHovered({ key, candle, rect });
+
+    // ✅ Make crosshair snap to the candle on hover (like old behavior)
+    const plotEl = plotRef.current;
+    if (plotEl) {
+      const pr = plotEl.getBoundingClientRect();
+      const x = clamp(rect.left + rect.width / 2 - pr.left, 0, pr.width);
+      const y = clamp(rect.top + rect.height / 2 - pr.top, 0, pr.height);
+      setCrosshair({ x, y });
+    }
   };
   const hideTooltip = () => setHovered(null);
 
@@ -146,22 +281,23 @@ export default function CandlestickChart() {
 
   const onPlotLeave = () => setCrosshair(null);
 
-  const scrollToStoryYear = (year: number) => {
-    const id = `story-${year}`;
-    const el = document.getElementById(id);
+  const scrollToStory = (year: string, tone: "green" | "red" = "green") => {
+    const preferred = `story-${year}-${tone}`;
+    const fallbackA = `story-${year}`;
+    const fallbackB = `story-${year}-green`;
+
+    const el =
+      document.getElementById(preferred) ||
+      document.getElementById(fallbackA) ||
+      document.getElementById(fallbackB);
+
     if (!el) return;
+
     el.scrollIntoView({ behavior: "smooth", block: "start" });
     try {
-      window.history.replaceState(null, "", `#${id}`);
+      window.history.replaceState(null, "", `#${el.id}`);
     } catch {}
   };
-
-  const dottedLine = (dir: "x" | "y") => ({
-    backgroundImage:
-      dir === "y"
-        ? "repeating-linear-gradient(to bottom, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 6px, rgba(0,0,0,0.18) 6px, rgba(0,0,0,0.18) 8px)"
-        : "repeating-linear-gradient(to right, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 6px, rgba(0,0,0,0.18) 6px, rgba(0,0,0,0.18) 8px)",
-  });
 
   const TooltipOverlay = () => {
     if (!hovered || isMobile) return null;
@@ -177,7 +313,7 @@ export default function CandlestickChart() {
     left = clamp(left, margin, ww - tooltipW - margin);
 
     let top = hovered.rect.top - 14;
-    const estimatedH = 170;
+    const estimatedH = 180;
 
     if (top - estimatedH < margin) top = hovered.rect.bottom + 14;
     else top = top - estimatedH;
@@ -200,14 +336,9 @@ export default function CandlestickChart() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="text-[12px] text-muted-foreground">
-                    {c.year} • {isUp ? "Growth" : "Learning"}
+                    {c.year} • {c.subtitle}
                   </div>
-                  <div className="mt-2 text-[16px] font-semibold leading-snug truncate">
-                    {c.subtitle}
-                  </div>
-                  <div className="mt-1 text-[12px] text-muted-foreground line-clamp-1">
-                    {c.title}
-                  </div>
+                  <div className="mt-2 text-[16px] font-semibold leading-snug">{c.title}</div>
                 </div>
 
                 <span
@@ -218,12 +349,17 @@ export default function CandlestickChart() {
                       : "bg-[rgba(239,68,68,0.12)] text-[rgba(164,32,32,1)] border-[rgba(239,68,68,0.25)]",
                   ].join(" ")}
                 >
-                  {isUp ? "📈 Win" : "📚 Lesson"}
+                  {isUp ? "📈 Growth" : "📚 Learning"}
                 </span>
               </div>
 
               <div className="mt-3 text-[13px] text-muted-foreground leading-relaxed">
                 {c.description}
+              </div>
+
+              <div className="mt-4 flex items-center justify-between text-[12px] text-muted-foreground">
+                <span>Hover for details</span>
+                <span>Click → Story</span>
               </div>
             </div>
           </div>
@@ -232,11 +368,15 @@ export default function CandlestickChart() {
     );
   };
 
+  const gridLineColor = getIsDark() ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
+
   return (
     <div className="w-full">
       <TooltipOverlay />
 
-      {/* Plot wrapper */}
+    
+
+      {/* ✅ Old clean structure: Y-axis + plot only (NO extra inner cards) */}
       <div className="relative" style={{ height: plotHeight }}>
         {/* Y axis */}
         <div
@@ -263,6 +403,7 @@ export default function CandlestickChart() {
               >
                 <item.Icon />
               </span>
+              {/* ✅ Mobile: icons only (space saver) */}
               {!isMobile ? <span>{item.label}</span> : null}
             </div>
           ))}
@@ -284,7 +425,7 @@ export default function CandlestickChart() {
                 className="absolute left-0 right-0 border-t"
                 style={{
                   top: `${(i / (yAxis.length - 1)) * 100}%`,
-                  borderColor: "rgba(0,0,0,0.06)",
+                  borderColor: gridLineColor,
                 }}
               />
             ))}
@@ -293,8 +434,14 @@ export default function CandlestickChart() {
           {/* Dotted Crosshair (desktop only) */}
           {crosshair && !isMobile && (
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-0 bottom-0 w-px opacity-70" style={{ left: crosshair.x, ...dottedLine("y") }} />
-              <div className="absolute left-0 right-0 h-px opacity-70" style={{ top: crosshair.y, ...dottedLine("x") }} />
+              <div
+                className="absolute top-0 bottom-0 w-px opacity-70"
+                style={{ left: crosshair.x, ...dottedLine("y") }}
+              />
+              <div
+                className="absolute left-0 right-0 h-px opacity-70"
+                style={{ top: crosshair.y, ...dottedLine("x") }}
+              />
             </div>
           )}
 
@@ -320,6 +467,8 @@ export default function CandlestickChart() {
                     const centerY = baselineY + (isUp ? -upDownOffsetY : upDownOffsetY);
 
                     const top = clamp(centerY - totalH / 2, 10, plotHeight - totalH - 10);
+
+                    // left/right split for up/down
                     const xShift = isUp ? -perYearOffset : perYearOffset;
 
                     return (
@@ -334,11 +483,14 @@ export default function CandlestickChart() {
                         }}
                         role="button"
                         tabIndex={0}
-                        onClick={() => scrollToStoryYear(c.year)}
+                        onClick={() => scrollToStory(c.year, isUp ? "green" : "red")}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") scrollToStoryYear(c.year);
+                          if (e.key === "Enter" || e.key === " ")
+                            scrollToStory(c.year, isUp ? "green" : "red");
                         }}
-                        onMouseEnter={(e) => showTooltip(key, c, e.currentTarget as unknown as HTMLElement)}
+                        onMouseEnter={(e) =>
+                          showTooltip(key, c, e.currentTarget as unknown as HTMLElement)
+                        }
                         onMouseLeave={hideTooltip}
                       >
                         <div className="relative mx-auto" style={{ width: candleWidth }}>
@@ -346,7 +498,9 @@ export default function CandlestickChart() {
                             className="w-px mx-auto"
                             style={{
                               height: wickTop,
-                              backgroundColor: isUp ? "rgba(34,197,94,0.75)" : "rgba(239,68,68,0.75)",
+                              backgroundColor: isUp
+                                ? "rgba(34,197,94,0.75)"
+                                : "rgba(239,68,68,0.75)",
                             }}
                           />
                           <div
@@ -366,7 +520,8 @@ export default function CandlestickChart() {
                               className="pointer-events-none absolute inset-0"
                               style={{
                                 borderRadius: 10,
-                                background: "linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0))",
+                                background:
+                                  "linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0))",
                               }}
                             />
                           </div>
@@ -374,7 +529,9 @@ export default function CandlestickChart() {
                             className="w-px mx-auto"
                             style={{
                               height: wickBottom,
-                              backgroundColor: isUp ? "rgba(34,197,94,0.75)" : "rgba(239,68,68,0.75)",
+                              backgroundColor: isUp
+                                ? "rgba(34,197,94,0.75)"
+                                : "rgba(239,68,68,0.75)",
                             }}
                           />
                         </div>
@@ -388,49 +545,40 @@ export default function CandlestickChart() {
         </div>
       </div>
 
-      {/* X Axis (aligned under plot area only) */}
-      <div className="mt-4 sm:mt-6" style={{ paddingLeft: leftAxisWidth }}>
-        <div
-          className="grid text-[10px] sm:text-xs text-muted-foreground"
-          style={{ gridTemplateColumns: `repeat(${years.length}, minmax(0, 1fr))` }}
-        >
-          {years.map((y) => (
-            <button
-              key={y}
-              type="button"
-              className="text-center hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30 rounded-md py-1"
-              onClick={() => scrollToStoryYear(y)}
-              aria-label={`Jump to ${y} story`}
-            >
-              {y}
-            </button>
-          ))}
-        </div>
-
-        {!isMobile ? (
+      {/* X Axis (years only — no UP/DN row) */}
+      <div className="mt-4 sm:mt-6">
+        {/* years row stays aligned with plot (so it needs left padding) */}
+        <div style={{ paddingLeft: leftAxisWidth }}>
           <div
-            className="grid mt-2 text-[10px]"
+            className="grid text-[10px] sm:text-xs text-muted-foreground"
             style={{ gridTemplateColumns: `repeat(${years.length}, minmax(0, 1fr))` }}
           >
             {years.map((y) => (
-              <div key={y} className="flex items-center justify-center gap-3">
-                <span className="text-[hsl(var(--candle-green-dark))]">● UP</span>
-                {hasDownForYear(y) ? <span className="text-red-500">● DN</span> : null}
-              </div>
+              <button
+                key={y}
+                type="button"
+                className="text-center hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30 rounded-md py-1"
+                onClick={() => scrollToStory(y, "green")}
+                aria-label={`Jump to ${y} story`}
+              >
+                {y}
+              </button>
             ))}
           </div>
-        ) : null}
-      </div>
-
-      {/* ✅ Legend centered in FULL card (no padding-left) */}
-      <div className="flex justify-center gap-6 sm:gap-8 mt-4 sm:mt-6 text-xs sm:text-sm">
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-green-500 rounded-full" />
-          Growth
         </div>
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-red-500 rounded-full" />
-          Learning
+
+        {/* ✅ Legend centered relative to FULL card (not affected by left padding) */}
+        <div className="mt-4 sm:mt-6 flex items-center justify-center w-full text-xs sm:text-sm">
+          <div className="inline-flex items-center justify-center gap-6 sm:gap-8">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-green-500 rounded-full" />
+              Growth
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-red-500 rounded-full" />
+              Learning
+            </div>
+          </div>
         </div>
       </div>
     </div>

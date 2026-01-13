@@ -91,8 +91,20 @@ const storyMediaByYear: Record<string, StoryMediaItem[]> = {
   "2023": [
     { kind: "image", src: "/placeholder.svg", alt: "Team moment", href: "https://x.com/", label: "Photo" },
     { kind: "image", src: "/placeholder.svg", alt: "Project shipping", href: "https://x.com/", label: "Photo" },
-    { kind: "video", src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXlzc250czdjczZ0aW5wZDNmZmp5OWtudjNyY3YyMXhnZmVhbmV4diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/toXKzaJP3WIgM/giphy.gif", alt: "Presentation clip", href: "https://x.com/", label: "Video" },
-    { kind: "image", src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dGVjaHxlbnwwfHwwfHx8MA%3D%3D", alt: "Leadership", href: "https://x.com/", label: "Photo" },
+    {
+      kind: "video",
+      src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXlzc250czdjczZ0aW5wZDNmZmp5OWtudjNyY3YyMXhnZmVhbmV4diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/toXKzaJP3WIgM/giphy.gif",
+      alt: "Presentation clip",
+      href: "https://x.com/",
+      label: "Video",
+    },
+    {
+      kind: "image",
+      src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dGVjaHxlbnwwfHwwfHx8MA%3D%3D",
+      alt: "Leadership",
+      href: "https://x.com/",
+      label: "Photo",
+    },
   ],
   "2024": [
     { kind: "image", src: "/placeholder.svg", alt: "Promotion moment", href: "https://x.com/", label: "Photo" },
@@ -111,6 +123,9 @@ const storyMediaByYear: Record<string, StoryMediaItem[]> = {
 const Index = () => {
   return (
     <main className="min-h-screen bc-page">
+      {/* ✅ This anchor is what Story "Back to chart" and chart hash uses */}
+      <div id="career-chart" className="scroll-mt-24" />
+
       <HeroSection />
 
       <SkillsSection />
@@ -132,13 +147,15 @@ const Index = () => {
           <div className="space-y-20 sm:space-y-24">
             {stories.map((story, index) => (
               <StorySection
-                key={index}
+                key={`${story.year}-${story.type}-${index}`}
                 type={story.type}
                 title={story.title}
                 year={story.year}
                 description={story.description}
                 index={index}
-                id={`story-${story.year}`}
+                chartTargetId="career-chart"
+                // ✅ IMPORTANT: unique IDs so chart can scroll to exact green/red story
+                id={`story-${story.year}-${story.type}`}
                 media={storyMediaByYear[story.year]}
               />
             ))}

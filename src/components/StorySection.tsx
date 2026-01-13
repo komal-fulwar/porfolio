@@ -20,6 +20,8 @@ interface StorySectionProps {
   index: number;
   id?: string;
   media?: StoryMediaItem[];
+  /** ✅ where the "Back to chart" should scroll */
+  chartTargetId?: string; // default: "career-chart"
 }
 
 export default function StorySection({
@@ -30,6 +32,7 @@ export default function StorySection({
   index,
   id,
   media,
+  chartTargetId = "career-chart",
 }: StorySectionProps) {
   const isMobile = useIsMobile();
 
@@ -130,20 +133,27 @@ export default function StorySection({
     return h.includes("x.com") || h.includes("twitter.com");
   };
 
-  const wrapScaleX = fromRight ? 1 : -1;
-  const cardScaleX = fromRight ? 1 : -1;
+  const goToChart = () => {
+    const el = document.getElementById(chartTargetId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+      window.history.replaceState(null, "", `#${chartTargetId}`);
+    } catch {}
+  };
+
   const floatLift = isMobile ? 0 : -10;
 
   return (
     <motion.section
       id={id}
-      className="relative min-w-0"
+      className="relative min-w-0 scroll-mt-24"
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      {/* ✅ UPGRADED STORY TEXT CARD */}
+      {/* ✅ STORY TEXT CARD */}
       <div className="relative z-50">
         <div className="mx-auto max-w-[720px] rounded-[28px] bg-[hsl(var(--background))]">
           <div
@@ -156,12 +166,13 @@ export default function StorySection({
               accentBorder,
             ].join(" ")}
           >
-            {/* subtle top glow + glass highlight */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
             <div
               className={[
                 "pointer-events-none absolute -top-24 left-1/2 h-48 w-[520px] -translate-x-1/2 rounded-full blur-3xl opacity-40",
-                type === "green" ? "bg-[hsl(var(--candle-green))]/30" : "bg-[hsl(var(--candle-red))]/24",
+                type === "green"
+                  ? "bg-[hsl(var(--candle-green))]/30"
+                  : "bg-[hsl(var(--candle-red))]/24",
               ].join(" ")}
             />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-white/10" />
@@ -176,14 +187,24 @@ export default function StorySection({
                 </span>
               </div>
 
-              <span
-                className={[
-                  "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
-                  badgeChip,
-                ].join(" ")}
-              >
-                {type === "green" ? "📈" : "📚"} {badge}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={goToChart}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
+                >
+                  ↖ Back to chart
+                </button>
+
+                <span
+                  className={[
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
+                    badgeChip,
+                  ].join(" ")}
+                >
+                  {type === "green" ? "📈" : "📚"} {badge}
+                </span>
+              </div>
             </div>
 
             {/* title */}
@@ -219,15 +240,15 @@ export default function StorySection({
       {/* spacing */}
       <div className="relative mt-14 sm:mt-16">
         <div className="relative isolate overflow-visible lg:mx-[calc(50%-50vw)]">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-40 " />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-40 " />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-40" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-40" />
 
           {/* ✅ ONE WRAPPER rotated + flipped (stable tilt) */}
           <div
             className="relative overflow-visible"
             style={{
-              transform: `rotate(${tilt}deg) scaleX(${wrapScaleX})`,
-              transformOrigin: "50% 50%",
+              transform: isMobile ? "none" : `rotate(${tilt}deg)`,
+              transformOrigin: "center",
             }}
           >
             {/* rail */}
@@ -298,10 +319,11 @@ export default function StorySection({
                       className="shrink-0 relative z-20"
                       style={{
                         width: cardW,
-                        scaleX: cardScaleX,
                         y: floatLift,
                       }}
-                      whileHover={isMobile ? undefined : { y: floatLift - 4, rotate: fromRight ? -1.2 : 1.2 }}
+                      whileHover={
+                        isMobile ? undefined : { y: floatLift - 4, rotate: fromRight ? -1.2 : 1.2 }
+                      }
                       transition={{ type: "spring", stiffness: 260, damping: 22 }}
                     >
                       <Wrapper

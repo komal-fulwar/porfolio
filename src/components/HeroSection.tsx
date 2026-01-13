@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import CandlestickChart from "./CandlestickChart";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-
+// Change the filename here if yours is different.
+import avatarImg from "./avatar.png";
 const AVATAR_SRC = "/anshita.jpg";
 const AVATAR_NAME = "Anshita";
 
@@ -113,19 +114,12 @@ const HeroSection = () => {
                 <div className="relative rounded-full p-[2px] bg-gradient-to-br from-emerald-500 via-lime-400 to-pink-500">
                   <div className="rounded-full bg-background p-[2px]">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-black/10 dark:border-white/10 bg-muted/50">
-                      {avatarOk ? (
-                        <img
-                          src={AVATAR_SRC}
-                          alt={AVATAR_NAME}
-                          className="h-full w-full object-cover"
-                          draggable={false}
-                          onError={() => setAvatarOk(false)}
-                        />
-                      ) : (
-                        <div className="h-full w-full grid place-items-center text-[12px] font-semibold text-foreground/80">
-                          A
-                        </div>
-                      )}
+                    <img
+                src={avatarImg}
+                alt="Avatar"
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
                     </div>
                   </div>
                 </div>
