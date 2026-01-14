@@ -3,13 +3,38 @@ import { motion } from "framer-motion";
 import CandlestickChart from "./CandlestickChart";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-// Change the filename here if yours is different.
+
+// avatar
 import avatarImg from "./avatar.png";
-const AVATAR_SRC = "/anshita.jpg";
+
+// ✅ IMAGE icons (same folder). Rename if needed.
+import rocketIcon from "./rocket.png";
+import growthIcon from "./growth.png";
+
 const AVATAR_NAME = "Anshita";
+
+function ShineText({ children, className }: { children: string; className?: string }) {
+  return (
+    <span className={["bc-shine-wrap", className ?? ""].join(" ")}>
+      <span className="bc-shine-base">{children}</span>
+      <span aria-hidden className="bc-shine-layer">
+        {children}
+      </span>
+    </span>
+  );
+}
 
 const HeroSection = () => {
   const [avatarOk, setAvatarOk] = useState(true);
+
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+      window.history.replaceState(null, "", `#${id}`);
+    } catch {}
+  };
 
   return (
     <section className="min-h-screen relative overflow-hidden bg-background">
@@ -18,33 +43,36 @@ const HeroSection = () => {
         <ThemeToggle />
       </div>
 
-      {/* Floating playful elements */}
+      {/* ✅ BIG floating ICONS (no sticky box container) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Rocket (left) */}
         <motion.div
-          className="absolute top-28 left-10 text-2xl sm:text-3xl p-3 bc-sticky bc-sticky-blue bc-hoverlift"
+          className="absolute left-3 top-20 sm:left-10 sm:top-24"
           style={{ rotate: -8 }}
           animate={{ y: [0, 14, 0] }}
           transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
         >
-          🚀
+          <img
+            src={rocketIcon}
+            alt="Rocket icon"
+            className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.55)]"
+            draggable={false}
+          />
         </motion.div>
 
+        {/* Growth (right) - positioned so it never collides with the theme toggle */}
         <motion.div
-          className="absolute top-40 right-12 text-2xl sm:text-3xl p-3 bc-sticky bc-sticky-green bc-hoverlift"
+          className="absolute right-2 top-24 sm:right-12 sm:top-28"
           style={{ rotate: 9 }}
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
         >
-          📈
-        </motion.div>
-
-        <motion.div
-          className="absolute bottom-64 right-10 text-2xl sm:text-3xl p-3 bc-sticky bc-sticky-yellow bc-hoverlift"
-          style={{ rotate: 10 }}
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-        >
-          🌙
+          <img
+            src={growthIcon}
+            alt="Growth icon"
+            className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.55)]"
+            draggable={false}
+          />
         </motion.div>
       </div>
 
@@ -69,14 +97,16 @@ const HeroSection = () => {
             Live Career Index
           </motion.div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-            Anshita&apos;s{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-500 to-pink-500">
-              Pump &amp; Dump
-            </span>
+          <motion.h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7 }}
+          >
+            Anshita&apos;s <ShineText className="align-baseline">Pump &amp; Dump</ShineText>
             <br />
             Story
-          </h1>
+          </motion.h1>
 
           <p className="text-base sm:text-lg max-w-2xl mx-auto text-muted-foreground">
             A visual journey through my career — the highs, the lows, and everything in between.
@@ -90,8 +120,11 @@ const HeroSection = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
           >
-            <Button className="bc-hoverlift bc-hovershadow">Explore Story</Button>
-            <Button variant="outline" className="bc-hoverlift">
+            <Button className="bc-hoverlift bc-hovershadow" onClick={() => scrollToId("story")} type="button">
+              Explore Story
+            </Button>
+
+            <Button variant="outline" className="bc-hoverlift" onClick={() => scrollToId("skills")} type="button">
               View Skills
             </Button>
           </motion.div>
@@ -104,57 +137,103 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.7 }}
         >
-          {/* ✅ CLEAN header row that fits the chart perfectly */}
           <div className="flex items-center justify-between gap-3 mb-4">
-            {/* Top-left personal touch */}
             <div className="flex items-center gap-3 min-w-0">
-              {/* Avatar with subtle ring + glow */}
               <div className="relative shrink-0">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-400/30 via-lime-300/20 to-pink-400/20 blur-[10px]" />
                 <div className="relative rounded-full p-[2px] bg-gradient-to-br from-emerald-500 via-lime-400 to-pink-500">
                   <div className="rounded-full bg-background p-[2px]">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-black/10 dark:border-white/10 bg-muted/50">
-                    <img
-                src={avatarImg}
-                alt="Avatar"
-                className="h-full w-full object-cover"
-                draggable={false}
-              />
+                      {avatarOk ? (
+                        <img
+                          src={avatarImg}
+                          alt="Avatar"
+                          className="h-full w-full object-cover"
+                          draggable={false}
+                          onError={() => setAvatarOk(false)}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
 
-                {/* live dot */}
                 <span className="absolute -right-0.5 -bottom-0.5 h-3.5 w-3.5 rounded-full bg-[hsl(var(--candle-green))] border-2 border-background shadow-sm" />
               </div>
 
-              {/* Name + label (no unnecessary pills) */}
               <div className="min-w-0">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="text-sm sm:text-[15px] font-semibold text-foreground/90 truncate">
-                    {AVATAR_NAME}'s Career chart ✨
-                  </div>
-                 
-
-              
+                <div className="text-sm sm:text-[15px] font-semibold text-foreground/90 truncate">
+                  {AVATAR_NAME}'s Career chart ✨
                 </div>
 
                 <div className="text-[11px] sm:text-xs text-muted-foreground truncate">
-                  Hover candles for clean tooltips 
+                  Hover candles for clean tooltips
                 </div>
               </div>
             </div>
 
-            {/* Right side hint (desktop only) */}
             <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
               Click a year to jump to the story ↗
             </div>
           </div>
-          <br></br>
+
+          <br />
 
           <CandlestickChart />
         </motion.div>
       </div>
+
+      {/* Shine (unchanged) */}
+      <style>{`
+        .bc-shine-wrap{
+          position: relative;
+          display: inline-block;
+          white-space: nowrap;
+          vertical-align: baseline;
+          line-height: 1;
+        }
+        .bc-shine-base{
+          display: inline-block;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          background-image: linear-gradient(
+            90deg,
+            rgba(16,185,129,1) 0%,
+            rgba(163,230,53,1) 35%,
+            rgba(236,72,153,1) 78%,
+            rgba(244,114,182,1) 100%
+          );
+        }
+        .bc-shine-layer{
+          position: absolute;
+          inset: 0;
+          display: inline-block;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          background-image: repeating-linear-gradient(
+            115deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0) 42%,
+            rgba(255,255,255, var(--bc-shine-a)) 48%,
+            rgba(255,255,255,0) 54%,
+            rgba(255,255,255,0) 100%
+          );
+          background-size: 240% 100%;
+          background-position: 0% 0%;
+          animation: bcTextShine 6.2s linear infinite;
+          mix-blend-mode: screen;
+          opacity: 0.95;
+          pointer-events: none;
+          will-change: background-position;
+        }
+        :root{ --bc-shine-a: 0.55; }
+        .dark{ --bc-shine-a: 0.9; }
+        @keyframes bcTextShine{
+          0%{ background-position: 0% 0%; }
+          100%{ background-position: -240% 0%; }
+        }
+      `}</style>
     </section>
   );
 };

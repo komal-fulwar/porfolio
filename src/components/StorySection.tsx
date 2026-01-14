@@ -1,4 +1,4 @@
-import { motion, useMotionValue, animate } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -15,32 +15,28 @@ export interface StoryMediaItem {
 interface StorySectionProps {
   type: "green" | "red";
   title: string;
+  subtitle?: string;
   year: string;
   description: string;
   index: number;
   id?: string;
   media?: StoryMediaItem[];
-  /** ✅ where the "Back to chart" should scroll */
-  chartTargetId?: string; // default: "career-chart"
 }
 
 export default function StorySection({
   type,
   title,
+  subtitle,
   year,
   description,
   index,
   id,
   media,
-  chartTargetId = "career-chart",
 }: StorySectionProps) {
   const isMobile = useIsMobile();
-
   const fromRight = index % 2 === 0;
-  const tilt = isMobile ? 0 : fromRight ? -6 : 6;
 
   const x = useMotionValue(0);
-  const railBP = useMotionValue(0);
   const [paused, setPaused] = useState(false);
 
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -53,11 +49,11 @@ export default function StorySection({
       kind: i % 3 === 0 ? "video" : "image",
       src: "/placeholder.svg",
       alt: `Story media ${i + 1} for ${year}`,
-      href: i % 2 === 0 ? "https://x.com/" : undefined,
       label: i % 3 === 0 ? "Video" : "Photo",
     }));
   }, [media, year]);
 
+  // duplicate for seamless loop
   const loopCards = useMemo(() => [...cards, ...cards], [cards]);
 
   useEffect(() => {
@@ -76,35 +72,40 @@ export default function StorySection({
     return () => window.removeEventListener("resize", calc);
   }, [isMobile]);
 
+  // distance to loop exactly once (based on original cards count, not loopCards)
   const loopDistance = (cardW + gap) * cards.length;
 
+  // ✅ NO-GLITCH infinite loop (keeps current x and wraps smoothly)
   useEffect(() => {
-    if (paused) return;
     if (!loopDistance) return;
 
-    x.set(0);
+    let raf = 0;
+    let last = performance.now();
 
-    const controls = animate(x, [0, -loopDistance], {
-      duration: isMobile ? 22 : 20,
-      ease: "linear",
-      repeat: Infinity,
-    });
+    // keep same “feel” as before (duration ~20–22s for one full loop)
+    const duration = isMobile ? 22 : 20;
+    const speed = loopDistance / duration; // px per second
 
-    return () => controls.stop();
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+
+      if (!paused) {
+        let next = x.get() - speed * dt;
+
+        // wrap without snapping (no x.set(0) ever)
+        if (next <= -loopDistance) next += loopDistance;
+        if (next > 0) next -= loopDistance;
+
+        x.set(next);
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [paused, loopDistance, isMobile, x]);
-
-  useEffect(() => {
-    const distance = 1400;
-    railBP.set(0);
-
-    const controls = animate(railBP, [0, -distance], {
-      duration: isMobile ? 11 : 9,
-      ease: "linear",
-      repeat: Infinity,
-    });
-
-    return () => controls.stop();
-  }, [railBP, isMobile]);
 
   const dotClass =
     type === "green" ? "bg-[hsl(var(--candle-green))]" : "bg-[hsl(var(--candle-red))]";
@@ -133,29 +134,21 @@ export default function StorySection({
     return h.includes("x.com") || h.includes("twitter.com");
   };
 
-  const goToChart = () => {
-    const el = document.getElementById(chartTargetId);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    try {
-      window.history.replaceState(null, "", `#${chartTargetId}`);
-    } catch {}
-  };
-
   const floatLift = isMobile ? 0 : -10;
+  const hoverRotate = fromRight ? -1.2 : 1.2;
 
   return (
     <motion.section
       id={id}
-      className="relative min-w-0 scroll-mt-24"
+      className="relative min-w-0"
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      {/* ✅ STORY TEXT CARD */}
+      {/* TEXT CARD */}
       <div className="relative z-50">
-        <div className="mx-auto max-w-[720px] rounded-[28px] bg-[hsl(var(--background))]">
+        <div className="mx-auto max-w-[720px]">
           <div
             className={[
               "relative overflow-hidden rounded-[28px] border bg-card",
@@ -177,7 +170,6 @@ export default function StorySection({
             />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-white/10" />
 
-            {/* header row */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <span className={`h-2.5 w-2.5 rounded-full ${dotClass}`} />
@@ -187,37 +179,30 @@ export default function StorySection({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={goToChart}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
-                >
-                  ↖ Back to chart
-                </button>
-
-                <span
-                  className={[
-                    "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
-                    badgeChip,
-                  ].join(" ")}
-                >
-                  {type === "green" ? "📈" : "📚"} {badge}
-                </span>
-              </div>
+              <span
+                className={[
+                  "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
+                  badgeChip,
+                ].join(" ")}
+              >
+                {type === "green" ? "📈" : "📚"} {badge}
+              </span>
             </div>
 
-            {/* title */}
             <h3 className="mt-4 text-[18px] sm:text-[20px] font-semibold leading-tight tracking-[-0.02em]">
               <span className={accentText}>{title}</span>
             </h3>
 
-            {/* description */}
+            {subtitle ? (
+              <div className="mt-2 text-[13px] sm:text-[14px] text-muted-foreground">
+                {subtitle}
+              </div>
+            ) : null}
+
             <p className="mt-3 text-[14px] sm:text-[15px] text-muted-foreground leading-relaxed line-clamp-4">
               {description}
             </p>
 
-            {/* bottom meta row */}
             <div className="mt-auto pt-5 flex items-center justify-between">
               <div className="text-[12px] text-muted-foreground/90">
                 <span className="inline-flex items-center gap-2">
@@ -237,155 +222,119 @@ export default function StorySection({
         </div>
       </div>
 
-      {/* spacing */}
+      {/* MEDIA CAROUSEL (✅ NO RAIL / NO DOTS / NO LINES) */}
       <div className="relative mt-14 sm:mt-16">
         <div className="relative isolate overflow-visible lg:mx-[calc(50%-50vw)]">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-40" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-40" />
-
-          {/* ✅ ONE WRAPPER rotated + flipped (stable tilt) */}
+          {/* viewport */}
           <div
-            className="relative overflow-visible"
-            style={{
-              transform: isMobile ? "none" : `rotate(${tilt}deg)`,
-              transformOrigin: "center",
-            }}
+            ref={viewportRef}
+            className={["relative z-10 overflow-visible", isMobile ? "pt-10 pb-10" : "pt-14 pb-16"].join(
+              " "
+            )}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
           >
-            {/* rail */}
-            <div
-              className="pointer-events-none absolute left-1/2 -translate-x-1/2 z-0"
+            <motion.div
+              className="flex items-center will-change-transform"
               style={{
-                top: isMobile ? "58%" : "60%",
-                width: isMobile ? "260vw" : "320vw",
+                x,
+                gap,
+                paddingLeft: isMobile ? 16 : 64,
+                paddingRight: isMobile ? 16 : 64,
               }}
+              drag="x"
+              dragConstraints={{ left: -999999, right: 999999 }}
+              dragElastic={0.06}
+              onDragStart={() => setPaused(true)}
+              onDragEnd={() => setPaused(false)}
             >
-              <div className="h-[3px] w-full rounded-full bg-black/12" />
-              {!isMobile ? <div className="mt-3 h-[16px] w-full bg-black/6 blur-[12px]" /> : null}
+              {loopCards.map((c, i) => {
+                const clickable = Boolean(c.href);
+                const showX = isXLink(c.href);
 
-              <motion.div
-                className="mt-[-10px] h-[3px] w-full opacity-85"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(to right, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 18px, rgba(0,0,0,0.18) 18px, rgba(0,0,0,0.18) 34px)",
-                  backgroundPositionX: railBP,
-                }}
-              />
+                const Wrapper: any = clickable ? "a" : "div";
+                const wrapperProps = clickable
+                  ? { href: c.href, target: "_blank", rel: "noreferrer" }
+                  : {};
 
-              <motion.div
-                className="mt-[6px] h-[2px] w-full opacity-35"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(to right, rgba(0,0,0,0.0) 0px, rgba(0,0,0,0.0) 30px, rgba(0,0,0,0.12) 30px, rgba(0,0,0,0.12) 56px)",
-                  backgroundPositionX: railBP,
-                }}
-              />
-            </div>
-
-            {/* viewport */}
-            <div
-              ref={viewportRef}
-              className={["relative z-10 overflow-visible", isMobile ? "pt-12 pb-12" : "pt-16 pb-18"].join(
-                " "
-              )}
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-            >
-              <motion.div
-                className="flex items-center will-change-transform"
-                style={{
-                  x,
-                  gap,
-                  paddingLeft: isMobile ? 16 : 64,
-                  paddingRight: isMobile ? 16 : 64,
-                }}
-                drag="x"
-                dragConstraints={{ left: -999999, right: 999999 }}
-                dragElastic={0.06}
-                onDragStart={() => setPaused(true)}
-                onDragEnd={() => setPaused(false)}
-              >
-                {loopCards.map((c, i) => {
-                  const clickable = Boolean(c.href);
-                  const showX = isXLink(c.href);
-
-                  const Wrapper: any = clickable ? "a" : "div";
-                  const wrapperProps = clickable
-                    ? { href: c.href, target: "_blank", rel: "noreferrer" }
-                    : {};
-
-                  return (
-                    <motion.div
-                      key={`${c.src}-${i}`}
-                      className="shrink-0 relative z-20"
-                      style={{
-                        width: cardW,
-                        y: floatLift,
-                      }}
-                      whileHover={
-                        isMobile ? undefined : { y: floatLift - 4, rotate: fromRight ? -1.2 : 1.2 }
-                      }
-                      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                return (
+                  <motion.div
+                    key={`${c.src}-${i}`}
+                    className="shrink-0 relative z-20"
+                    style={{ width: cardW, y: floatLift }}
+                    whileHover={isMobile ? undefined : { y: floatLift - 4, rotate: hoverRotate }}
+                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                  >
+                    <Wrapper
+                      {...wrapperProps}
+                      className={[
+                        "relative block rounded-2xl",
+                        clickable
+                          ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25 dark:focus-visible:ring-white/20"
+                          : "cursor-default",
+                      ].join(" ")}
                     >
-                      <Wrapper
-                        {...wrapperProps}
+                      <div
                         className={[
-                          "relative block rounded-2xl",
-                          clickable
-                            ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25"
-                            : "cursor-default",
+                          "absolute -inset-0.5 rounded-[1.35rem] -z-10",
+                          plateBg,
+                          "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
+                          "translate-x-2 translate-y-2",
                         ].join(" ")}
-                      >
-                        <div
-                          className={[
-                            "absolute -inset-0.5 rounded-[1.35rem] -z-10",
-                            plateBg,
-                            "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
-                            "translate-x-2 translate-y-2",
-                          ].join(" ")}
-                        />
+                      />
 
-                        <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
-                          <div className="relative aspect-[16/9] bg-muted/35">
-                            <img
-                              src={c.src}
-                              alt={c.alt}
-                              className="h-full w-full object-cover"
-                              loading="lazy"
-                              draggable={false}
-                            />
+                      <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
+                        <div className="relative aspect-[16/9] bg-muted/35">
+                          <img
+                            src={c.src}
+                            alt={c.alt}
+                            className="h-full w-full object-cover"
+                            loading="lazy"
+                            draggable={false}
+                          />
 
-                            {c.kind === "video" ? (
-                              <div className="absolute inset-0 grid place-items-center bg-black/10">
-                                <div className="h-12 w-12 rounded-full bg-white/90 shadow-md grid place-items-center">
-                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M9 18V6l12 6-12 6Z" fill="currentColor" />
-                                  </svg>
-                                </div>
+                          {c.kind === "video" ? (
+                            <div className="absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
+                              <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  aria-hidden="true"
+                                  className="text-black dark:text-white"
+                                >
+                                  <path d="M9 18V6l12 6-12 6Z" fill="currentColor" />
+                                </svg>
                               </div>
-                            ) : null}
-
-                            <div className="absolute left-3 top-3">
-                              <span className="bc-pill">{c.label ?? "Story"}</span>
                             </div>
+                          ) : null}
+
+                          <div className="absolute left-3 top-3">
+                            <span className="bc-pill">{c.label ?? "Story"}</span>
                           </div>
-
-                          <div className="p-4 min-h-[64px]">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="text-sm font-semibold">{year} moment</div>
-                              {clickable ? <div className="text-xs text-muted-foreground">Open ↗</div> : null}
-                            </div>
-
-                            {showX ? <div className="mt-1 text-xs text-muted-foreground">View on X</div> : null}
-                          </div>
-
-                          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/14 via-transparent to-transparent" />
                         </div>
-                      </Wrapper>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
+
+                        <div className="p-4 min-h-[64px]">
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="text-sm font-semibold">{year} moment</div>
+                            {clickable ? (
+                              <div className="text-xs text-muted-foreground">Open ↗</div>
+                            ) : null}
+                          </div>
+
+                          {showX ? (
+                            <div className="mt-1 text-xs text-muted-foreground">View on X</div>
+                          ) : null}
+                        </div>
+
+                        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/14 via-transparent to-transparent" />
+                      </div>
+                    </Wrapper>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
         </div>
       </div>

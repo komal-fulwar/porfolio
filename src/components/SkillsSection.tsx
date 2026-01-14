@@ -111,6 +111,7 @@ function SkillNote({
     <motion.div
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
+      id="skills"
       className={[
         "relative overflow-hidden rounded-2xl",
         "bg-white/92 dark:bg-white/6",

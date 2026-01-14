@@ -1,13 +1,12 @@
 import { useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// ✅ avatar image in SAME folder as this file
-// Change the filename here if yours is different.
-import avatarImg from "./avatar.png";
+// ✅ Put avatar.png in the SAME folder as this file:
+const AVATAR_SRC = new URL("./avatar.png", import.meta.url).toString();
 
-type CandleType = "up" | "down";
+export type CandleType = "up" | "down";
 
-interface Candle {
+export interface Candle {
   year: string;
   type: CandleType;
   intensity: number;
@@ -20,10 +19,10 @@ interface Candle {
 const MAX_LEVEL = 4.5;
 
 /**
- * ✅ Option A content
+ * ✅ Content aligned with your PDF
  * ✅ 2025 last candle is GREEN (down first, then up)
  */
-const DATA: Candle[] = [
+export const CANDLE_DATA: Candle[] = [
   // 2020
   {
     year: "2020",
@@ -77,7 +76,7 @@ const DATA: Candle[] = [
     title: "Entering Web3 With Lumos Labs",
     subtitle: "Ecosystem work",
     description:
-      "My first deep exposure to Web3 — community, hackathons, partnerships, and growth loops. Learned how ecosystems move and how narratives form.",
+      "Landed my first proper Web3 role, leading community programs, partnerships, hackathons, and large-scale events.",
   },
   {
     year: "2022-23",
@@ -112,13 +111,13 @@ const DATA: Candle[] = [
       "First deep year in AI during extreme ecosystem acceleration. Learned to stay grounded, execute consistently, and build conviction beyond hype.",
   },
 
-  // 2025 (RED then GREEN - last candle GREEN)
+  // 2025 (RED then GREEN)
   {
     year: "2025",
     type: "down",
     intensity: 30,
     level: 4.2,
-    title: "COVID rethink on sustainability",
+    title: "COVID",
     subtitle: "Reset + recovery",
     description:
       "Contracted COVID during peak execution — forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
@@ -215,9 +214,9 @@ export default function CandlestickChart() {
 
   const plotRef = useRef<HTMLDivElement | null>(null);
 
-  const years = useMemo(() => Array.from(new Set(DATA.map((d) => d.year))), []);
+  const years = useMemo(() => Array.from(new Set(CANDLE_DATA.map((d) => d.year))), []);
 
-  // ✅ MOBILE FIT: tighter + smaller, NO horizontal scroll
+  // ✅ Responsive sizing
   const plotHeight = isMobile ? 250 : 340;
   const leftAxisWidth = isMobile ? 74 : 165;
 
@@ -253,12 +252,24 @@ export default function CandlestickChart() {
     };
   };
 
+  const scrollToStory = (year: string, tone: "green" | "red") => {
+    const preferred = `story-${year}-${tone}`;
+    const fallbackA = `story-${year}`;
+    const el = document.getElementById(preferred) || document.getElementById(fallbackA);
+    if (!el) return;
+
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+      window.history.replaceState(null, "", `#${el.id}`);
+    } catch {}
+  };
+
   const showTooltip = (key: string, candle: Candle, el: HTMLElement | null) => {
     if (!el || isMobile) return; // ✅ no hover tooltip on mobile
     const rect = el.getBoundingClientRect();
     setHovered({ key, candle, rect });
 
-    // ✅ Make crosshair snap to the candle on hover (like old behavior)
+    // ✅ snap crosshair to candle center
     const plotEl = plotRef.current;
     if (plotEl) {
       const pr = plotEl.getBoundingClientRect();
@@ -267,6 +278,7 @@ export default function CandlestickChart() {
       setCrosshair({ x, y });
     }
   };
+
   const hideTooltip = () => setHovered(null);
 
   const onPlotMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -279,24 +291,9 @@ export default function CandlestickChart() {
     setCrosshair({ x, y });
   };
 
-  const onPlotLeave = () => setCrosshair(null);
-
-  const scrollToStory = (year: string, tone: "green" | "red" = "green") => {
-    const preferred = `story-${year}-${tone}`;
-    const fallbackA = `story-${year}`;
-    const fallbackB = `story-${year}-green`;
-
-    const el =
-      document.getElementById(preferred) ||
-      document.getElementById(fallbackA) ||
-      document.getElementById(fallbackB);
-
-    if (!el) return;
-
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    try {
-      window.history.replaceState(null, "", `#${el.id}`);
-    } catch {}
+  const onPlotLeave = () => {
+    setCrosshair(null);
+    hideTooltip();
   };
 
   const TooltipOverlay = () => {
@@ -313,7 +310,7 @@ export default function CandlestickChart() {
     left = clamp(left, margin, ww - tooltipW - margin);
 
     let top = hovered.rect.top - 14;
-    const estimatedH = 180;
+    const estimatedH = 190;
 
     if (top - estimatedH < margin) top = hovered.rect.bottom + 14;
     else top = top - estimatedH;
@@ -374,9 +371,7 @@ export default function CandlestickChart() {
     <div className="w-full">
       <TooltipOverlay />
 
-    
-
-      {/* ✅ Old clean structure: Y-axis + plot only (NO extra inner cards) */}
+      {/* ✅ Clean structure: Y-axis + plot only */}
       <div className="relative" style={{ height: plotHeight }}>
         {/* Y axis */}
         <div
@@ -403,7 +398,6 @@ export default function CandlestickChart() {
               >
                 <item.Icon />
               </span>
-              {/* ✅ Mobile: icons only (space saver) */}
               {!isMobile ? <span>{item.label}</span> : null}
             </div>
           ))}
@@ -431,7 +425,7 @@ export default function CandlestickChart() {
             ))}
           </div>
 
-          {/* Dotted Crosshair (desktop only) */}
+          {/* Crosshair + Avatar (desktop only) */}
           {crosshair && !isMobile && (
             <div className="absolute inset-0 pointer-events-none">
               <div
@@ -442,6 +436,25 @@ export default function CandlestickChart() {
                 className="absolute left-0 right-0 h-px opacity-70"
                 style={{ top: crosshair.y, ...dottedLine("x") }}
               />
+
+              {/* ✅ Avatar */}
+              <div
+                className="absolute"
+                style={{
+                  left: crosshair.x,
+                  top: crosshair.y,
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <div className="h-9 w-9 rounded-full border border-white/20 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.8)] overflow-hidden bg-black/20">
+                  <img
+                    src={AVATAR_SRC}
+                    alt="Avatar"
+                    className="h-full w-full object-cover"
+                    draggable={false}
+                  />
+                </div>
+              </div>
             </div>
           )}
 
@@ -453,7 +466,8 @@ export default function CandlestickChart() {
             }}
           >
             {years.map((year) => {
-              const items = DATA.filter((d) => d.year === year);
+              const items = CANDLE_DATA.filter((d) => d.year === year);
+
               return (
                 <div key={year} className="relative">
                   {items.map((c, j) => {
@@ -468,7 +482,6 @@ export default function CandlestickChart() {
 
                     const top = clamp(centerY - totalH / 2, 10, plotHeight - totalH - 10);
 
-                    // left/right split for up/down
                     const xShift = isUp ? -perYearOffset : perYearOffset;
 
                     return (
@@ -479,7 +492,8 @@ export default function CandlestickChart() {
                           top,
                           left: "50%",
                           transform: `translateX(calc(-50% + ${xShift}px))`,
-                          width: isMobile ? 56 : 70,
+                          width: "100%",
+                          maxWidth: isMobile ? 56 : 70,
                         }}
                         role="button"
                         tabIndex={0}
@@ -545,9 +559,8 @@ export default function CandlestickChart() {
         </div>
       </div>
 
-      {/* X Axis (years only — no UP/DN row) */}
+      {/* X Axis (years only) */}
       <div className="mt-4 sm:mt-6">
-        {/* years row stays aligned with plot (so it needs left padding) */}
         <div style={{ paddingLeft: leftAxisWidth }}>
           <div
             className="grid text-[10px] sm:text-xs text-muted-foreground"
@@ -567,7 +580,7 @@ export default function CandlestickChart() {
           </div>
         </div>
 
-        {/* ✅ Legend centered relative to FULL card (not affected by left padding) */}
+        {/* ✅ Legend centered relative to FULL width */}
         <div className="mt-4 sm:mt-6 flex items-center justify-center w-full text-xs sm:text-sm">
           <div className="inline-flex items-center justify-center gap-6 sm:gap-8">
             <div className="flex items-center gap-2">
