@@ -12,7 +12,7 @@ export interface Candle {
   intensity: number;
   level: number; // 0(Start) -> 4.5(Moon-ish)
   title: string;
-  subtitle: string;
+ 
   description: string;
 }
 
@@ -30,7 +30,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 26,
     level: 1.35,
     title: "Spark of curiosity",
-    subtitle: "COVID → curiosity",
+   
     description:
       "A simple tech idea during COVID sparked my curiosity toward startups, problem-solving, and technology — the beginning of my journey.",
   },
@@ -40,7 +40,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 22,
     level: 1.35,
     title: "Starting From Zero in a Tier-2 City",
-    subtitle: "No mentors, no map",
+    
     description:
       "Had ideas and ambition but lacked execution frameworks, technical knowledge, and direction — figuring everything out alone from scratch.",
   },
@@ -52,7 +52,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 32,
     level: 2.1,
     title: "First Real-World Exposure",
-    subtitle: "Programs + communities",
+  
     description:
       "Entered real communities and programs, gaining hands-on exposure by executing initiatives and learning fast in public.",
   },
@@ -62,7 +62,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 26,
     level: 2.1,
     title: "Too Many Paths, No Map",
-    subtitle: "Fast growth, unclear direction",
+    
     description:
       "While executing and managing large-scale initiatives, I was personally unsure about long-term direction — without the right mentors to navigate choices.",
   },
@@ -74,7 +74,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 40,
     level: 3.05,
     title: "Entering Web3 With Lumos Labs",
-    subtitle: "Ecosystem work",
+
     description:
       "Landed my first proper Web3 role, leading community programs, partnerships, hackathons, and large-scale events.",
   },
@@ -84,7 +84,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 30,
     level: 3.05,
     title: "Bull Dreams, Bear Lessons",
-    subtitle: "Cycles hit different",
+  
     description:
       "Bull to bear taught hard lessons — watching narratives rise and disappear overnight was unsettling, but it taught me to build with conviction.",
   },
@@ -96,7 +96,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 52,
     level: 4.05,
     title: "Going Global with Capx AI",
-    subtitle: "AI × builders, end-to-end",
+   
     description:
       "Led growth and ecosystem efforts at Capx AI — owning ideation → builder outreach → operations → demo day, while continuously upskilling in AI.",
   },
@@ -106,7 +106,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 36,
     level: 4.05,
     title: "New model everyday!!!!",
-    subtitle: "Acceleration + narrative shifts",
+   
     description:
       "First deep year in AI during extreme ecosystem acceleration. Learned to stay grounded, execute consistently, and build conviction beyond hype.",
   },
@@ -118,7 +118,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 30,
     level: 4.2,
     title: "COVID",
-    subtitle: "Reset + recovery",
+   
     description:
       "Contracted COVID during peak execution — forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
   },
@@ -128,7 +128,7 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 58,
     level: 4.2,
     title: "deAI era with Aethir",
-    subtitle: "One-woman GTM engine",
+   
     description:
       "Built Aethir India end-to-end across brand, content, community, partnerships, IRL — driving early B2B, ecosystem, and institutional momentum in the deAI era.",
   },
@@ -333,12 +333,12 @@ export default function CandlestickChart() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="text-[12px] text-muted-foreground">
-                    {c.year} • {c.subtitle}
+                    {c.year} 
                   </div>
                   <div className="mt-2 text-[16px] font-semibold leading-snug">{c.title}</div>
                 </div>
 
-                <span
+                {/* <span
                   className={[
                     "shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
                     isUp
@@ -347,7 +347,7 @@ export default function CandlestickChart() {
                   ].join(" ")}
                 >
                   {isUp ? "📈 Growth" : "📚 Learning"}
-                </span>
+                </span> */}
               </div>
 
               <div className="mt-3 text-[13px] text-muted-foreground leading-relaxed">
@@ -355,8 +355,7 @@ export default function CandlestickChart() {
               </div>
 
               <div className="mt-4 flex items-center justify-between text-[12px] text-muted-foreground">
-                <span>Hover for details</span>
-                <span>Click → Story</span>
+                
               </div>
             </div>
           </div>

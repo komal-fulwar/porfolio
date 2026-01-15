@@ -118,7 +118,7 @@ export default function StorySection({
       ? "border-[hsl(var(--candle-green))]/20"
       : "border-[hsl(var(--candle-red))]/20";
 
-  const badge = type === "green" ? "Achievement" : "Lesson";
+  
 
   const badgeChip =
     type === "green"
@@ -179,14 +179,14 @@ export default function StorySection({
                 </span>
               </div>
 
-              <span
+              {/* <span
                 className={[
                   "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
                   badgeChip,
                 ].join(" ")}
               >
                 {type === "green" ? "📈" : "📚"} {badge}
-              </span>
+              </span> */}
             </div>
 
             <h3 className="mt-4 text-[18px] sm:text-[20px] font-semibold leading-tight tracking-[-0.02em]">
@@ -203,21 +203,7 @@ export default function StorySection({
               {description}
             </p>
 
-            <div className="mt-auto pt-5 flex items-center justify-between">
-              <div className="text-[12px] text-muted-foreground/90">
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
-                  <span>Moment • Story timeline</span>
-                </span>
-              </div>
-
-              <div className="text-[12px] font-medium text-muted-foreground/90">
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
-                  <span>Scroll to explore</span>
-                </span>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

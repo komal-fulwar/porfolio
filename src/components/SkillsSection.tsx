@@ -297,22 +297,7 @@ const SkillsSection = () => {
                   My core stack that turns ideas into shipped products — from clean UI to solid APIs.
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                  {["React", "TypeScript", "Node", "APIs", "Figma", "Product"].map(
-                    (chip) => (
-                      <span
-                        key={chip}
-                        className="px-3 py-1 rounded-full text-xs sm:text-sm font-medium
-                          border border-black/10 dark:border-white/10
-                          bg-white/70 dark:bg-white/5
-                          text-foreground/90 dark:text-white/90
-                          backdrop-blur"
-                      >
-                        {chip}
-                      </span>
-                    )
-                  )}
-                </div>
+               
 
                 <ul className="space-y-3 text-sm sm:text-base text-foreground/80">
                   {[

@@ -11,7 +11,7 @@ import avatarImg from "./avatar.png";
 import rocketIcon from "./rocket.png";
 import growthIcon from "./growth.png";
 
-const AVATAR_NAME = "Anshita";
+const AVATAR_NAME = "ANSHITA";
 
 function ShineText({ children, className }: { children: string; className?: string }) {
   return (
@@ -162,11 +162,11 @@ const HeroSection = () => {
 
               <div className="min-w-0">
                 <div className="text-sm sm:text-[15px] font-semibold text-foreground/90 truncate">
-                  {AVATAR_NAME}'s Career chart ✨
+                  ${AVATAR_NAME}
                 </div>
 
                 <div className="text-[11px] sm:text-xs text-muted-foreground truncate">
-                  Hover candles for clean tooltips
+                
                 </div>
               </div>
             </div>
