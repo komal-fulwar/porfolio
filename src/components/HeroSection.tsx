@@ -103,9 +103,9 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7 }}
           >
-            Anshita&apos;s <ShineText className="align-baseline">Pump &amp; Dump</ShineText>
-            <br />
-            Story
+            Anshita&apos;s <ShineText className="align-baseline">Pump &amp; Dump</ShineText> Story
+            
+             
           </motion.h1>
 
           <p className="text-base sm:text-lg max-w-2xl mx-auto text-muted-foreground">
