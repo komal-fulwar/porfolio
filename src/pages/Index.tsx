@@ -214,11 +214,11 @@ const Index = () => {
               media={[
                 {
                   kind: "video",
-                  src: "/videos/2024-1.mp4",
+                  src: "/video4.mp4",
                   poster: "/videos/2024-1.jpg",
                   alt: "Capx — highlight video 1",
                   label: "Video",
-                  href: "https://x.com",
+                  href: "https://x.com/anshitaksoni/status/1855996325634187428?s=20",
                 },
                 {
                   kind: "image",
@@ -243,18 +243,23 @@ const Index = () => {
                 },
                 {
                   kind: "video",
-                  src: "/videos/2024-2.mp4",
+                  src: "/video5.mp4",
                   poster: "/videos/2024-2.jpg",
                   alt: "Capx — highlight video 2",
                   label: "Video",
+                   href: "https://x.com/CapxCollective/status/1772512003564683510?s=20",
                   
                 },
-                {
+               
+             
+                  {
                   kind: "image",
-                  src: "/gifs/2024-1.gif",
-                  alt: "Capx — gif moment",
-                  label: "GIF",
-                  fit: "contain",
+                  src: "https://pbs.twimg.com/media/GbnMs6raAAANst7?format=jpg&name=medium",
+                  alt: "Capx — moment 3",
+                  label: "Moment",
+                   href: "https://x.com/CapxCollective/status/1772512003564683510?s=20",
+                  
+                  
                 },
               ]}
               content={[

@@ -83,7 +83,7 @@ const HeroSection = () => {
           </motion.h1>
 
           <p className="text-base sm:text-lg max-w-2xl mx-auto text-muted-foreground">
-            A visual journey through my career — the highs, the lows, and everything in between.
+            A visual journey through my career - the highs, the lows, and everything in between.
             <span className="font-medium text-[hsl(var(--candle-green-dark))]"> Green candles</span> for wins,
             <span className="font-medium text-[hsl(var(--candle-red-dark))]"> red candles</span> for lessons learned.
           </p>
