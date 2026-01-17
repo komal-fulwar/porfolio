@@ -46,34 +46,8 @@ const HeroSection = () => {
       {/* ✅ BIG floating ICONS (no sticky box container) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Rocket (left) */}
-        <motion.div
-          className="absolute left-3 top-20 sm:left-10 sm:top-24"
-          style={{ rotate: -8 }}
-          animate={{ y: [0, 14, 0] }}
-          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <img
-            src={rocketIcon}
-            alt="Rocket icon"
-            className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.55)]"
-            draggable={false}
-          />
-        </motion.div>
-
-        {/* Growth (right) - positioned so it never collides with the theme toggle */}
-        <motion.div
-          className="absolute right-2 top-24 sm:right-12 sm:top-28"
-          style={{ rotate: 9 }}
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-        >
-          <img
-            src={growthIcon}
-            alt="Growth icon"
-            className="h-14 w-14 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain select-none drop-shadow-[0_18px_30px_rgba(0,0,0,0.25)] dark:drop-shadow-[0_22px_36px_rgba(0,0,0,0.55)]"
-            draggable={false}
-          />
-        </motion.div>
+      
+    
       </div>
 
       <div className="bc-container pt-16 sm:pt-20 pb-10 relative z-10">

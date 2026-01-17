@@ -199,26 +199,26 @@ const SkillsSection = () => {
                   <p>
                     I build communities, narratives, and GTM strategy for Web3 and AI projects.
                     <br />
-                    (I also lose money on meme coins, purely for research, of course.)
+                    (I also lose money on memecoins, purely for research, of course)
                   </p>
 
                   <p>
                     With <span className="font-semibold text-foreground/90">4+ years</span> of living life onchain, I’ve
                     helped projects go from “early” to “everywhere” by blending content, community, partnerships, and
-                    marketing. My career trajectory looks a lot like a crypto chart — volatile, educational, and
+                    marketing. My career trajectory looks a lot like a crypto chart - volatile, educational, and
                     surprisingly high-signal powered by a jack-of-all-trades mindset.
                   </p>
 
                   <p>
                     Since the last <span className="font-semibold text-foreground/90">2 years</span>, I’ve been deep in
-                    the Web3 × AI world — designing GTM and driving adoption where builders, founders, and ecosystems
+                    the Web3 × AI world - designing GTM and driving adoption where builders, founders, and ecosystems
                     come together to build what’s next.
                   </p>
                 </div>
 
                 <div className="pt-1">
                   <div className="text-[13px] sm:text-[14px] font-semibold text-foreground/90 mb-3">
-                    Here’s everything I can do —
+                    Here’s everything I can do -
                   </div>
 
                   <ul className="space-y-3 text-[13px] sm:text-[14px] text-foreground/80">
