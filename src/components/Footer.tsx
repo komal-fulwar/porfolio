@@ -84,8 +84,7 @@ const Footer = () => {
                   <span className="font-medium text-foreground">Anshita</span>.
                 </div>
 
-                <div>Not financial advice. Past career performance is not indicative of future results.</div>
-
+               
                 <div className="pt-2 text-[11px] text-muted-foreground/80">
                   © {new Date().getFullYear()} Anshita — Built like a chart: steady, honest, trending up.
                 </div>
