@@ -335,9 +335,7 @@ export default function StorySection({
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent
-                    className="w-[calc(100vw-24px)] max-w-[calc(100vw-24px)] sm:max-w-[860px] p-0 overflow-hidden"
-                  >
+                  <DialogContent className="w-[calc(100vw-24px)] max-w-[calc(100vw-24px)] sm:max-w-[860px] p-0 overflow-hidden">
                     <div className="p-5 sm:p-6 border-b border-border">
                       <DialogHeader>
                         <DialogTitle className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">
@@ -349,7 +347,7 @@ export default function StorySection({
                       </DialogHeader>
                     </div>
 
-                    <ScrollArea className="max-h-[80vh] sm:max-h-[72vh]">
+                    <ScrollArea className="max-h-[72vh]">
                       <div className="p-5 sm:p-6">
                         <RichBlock content={content} highlights={highlights} />
                       </div>
@@ -386,20 +384,20 @@ export default function StorySection({
                   <div className="relative aspect-[16/9] bg-muted/35">
                     {single.kind === "video" ? (
                       <video
-                        className={`h-full w-full ${fitClass(single.fit)}`}
+                        className={"h-full w-full " + fitClass(single.fit)}
                         src={single.src}
                         poster={single.poster}
+                        preload="metadata"
                         muted
                         playsInline
                         loop
                         autoPlay
-                        preload="metadata"
                       />
                     ) : (
                       <img
                         src={single.src}
                         alt={single.alt}
-                        className={`h-full w-full ${fitClass(single.fit)}`}
+                        className={"h-full w-full " + fitClass(single.fit)}
                         loading="lazy"
                         draggable={false}
                       />
@@ -486,11 +484,11 @@ export default function StorySection({
                                   className={`h-full w-full ${fitClass(c.fit)}`}
                                   src={c.src}
                                   poster={c.poster}
+                                  preload="metadata"
                                   muted
                                   playsInline
                                   loop
                                   autoPlay
-                                  preload="metadata"
                                 />
                               ) : (
                                 <img

@@ -1,4 +1,5 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // ✅ Put avatar.png in the SAME folder as this file:
@@ -12,14 +13,12 @@ export interface Candle {
   intensity: number;
   level: number; // 0(Start) -> 4.5(Moon-ish)
   title: string;
- 
   description: string;
 }
 
 const MAX_LEVEL = 4.5;
 
 /**
- * ✅ Content aligned with your PDF
  * ✅ 2025 last candle is GREEN (down first, then up)
  */
 export const CANDLE_DATA: Candle[] = [
@@ -30,7 +29,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 26,
     level: 1.35,
     title: "Spark of curiosity",
-   
     description:
       "A simple tech idea during COVID sparked my curiosity toward startups, problem-solving, and technology — the beginning of my journey.",
   },
@@ -40,7 +38,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 22,
     level: 1.35,
     title: "Starting From Zero in a Tier-2 City",
-    
     description:
       "Had ideas and ambition but lacked execution frameworks, technical knowledge, and direction — figuring everything out alone from scratch.",
   },
@@ -52,7 +49,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 32,
     level: 2.1,
     title: "First Real-World Exposure",
-  
     description:
       "Entered real communities and programs, gaining hands-on exposure by executing initiatives and learning fast in public.",
   },
@@ -62,7 +58,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 26,
     level: 2.1,
     title: "Too Many Paths, No Map",
-    
     description:
       "While executing and managing large-scale initiatives, I was personally unsure about long-term direction — without the right mentors to navigate choices.",
   },
@@ -74,7 +69,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 40,
     level: 3.05,
     title: "Entering Web3 With Lumos Labs",
-
     description:
       "Landed my first proper Web3 role, leading community programs, partnerships, hackathons, and large-scale events.",
   },
@@ -84,7 +78,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 30,
     level: 3.05,
     title: "Bull Dreams, Bear Lessons",
-  
     description:
       "Bull to bear taught hard lessons — watching narratives rise and disappear overnight was unsettling, but it taught me to build with conviction.",
   },
@@ -96,7 +89,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 52,
     level: 4.05,
     title: "Going Global with Capx AI",
-   
     description:
       "Led growth and ecosystem efforts at Capx AI — owning ideation → builder outreach → operations → demo day, while continuously upskilling in AI.",
   },
@@ -106,7 +98,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 36,
     level: 4.05,
     title: "New model everyday!!!!",
-   
     description:
       "First deep year in AI during extreme ecosystem acceleration. Learned to stay grounded, execute consistently, and build conviction beyond hype.",
   },
@@ -118,7 +109,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 30,
     level: 4.2,
     title: "COVID",
-   
     description:
       "Contracted COVID during peak execution — forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
   },
@@ -128,7 +118,6 @@ export const CANDLE_DATA: Candle[] = [
     intensity: 58,
     level: 4.2,
     title: "deAI era with Aethir",
-   
     description:
       "Built Aethir India end-to-end across brand, content, community, partnerships, IRL — driving early B2B, ecosystem, and institutional momentum in the deAI era.",
   },
@@ -208,10 +197,10 @@ export default function CandlestickChart() {
     key: string;
     candle: Candle;
     rect: DOMRect;
+    hasStory: boolean;
   } | null>(null);
 
   const [crosshair, setCrosshair] = useState<{ x: number; y: number } | null>(null);
-
   const plotRef = useRef<HTMLDivElement | null>(null);
 
   const years = useMemo(() => Array.from(new Set(CANDLE_DATA.map((d) => d.year))), []);
@@ -252,26 +241,62 @@ export default function CandlestickChart() {
     };
   };
 
-  const scrollToStory = (year: string, tone: "green" | "red") => {
-    const preferred = `story-${year}-${tone}`;
-    const fallbackA = `story-${year}`;
-    const el = document.getElementById(preferred) || document.getElementById(fallbackA);
+  // ✅ Normalize year -> id
+  const normalizeYearForId = (year: string) => {
+    const y = year.trim();
+    const dashFixed = y.replace(/[–—]/g, "-");
+    if (dashFixed === "2022-2023") return "2022-23";
+    return dashFixed;
+  };
+
+  const resolveStoryId = (year: string) => {
+    const ny = normalizeYearForId(year);
+
+    // These match the IDs you’re using in Index.tsx (story-2025, story-2024, story-2022-23...)
+    const candidates = [
+      `story-${ny}`,
+      `story-${ny}-green`,
+      `story-${ny}-red`,
+      ny === "2022-23" ? "story-2022-2023" : "",
+      ny === "2022-2023" ? "story-2022-23" : "",
+    ].filter(Boolean);
+
+    for (const id of candidates) {
+      const el = typeof document !== "undefined" ? document.getElementById(id) : null;
+      if (el) return id;
+    }
+    return null;
+  };
+
+  const hasStoryForYear = (year: string) => Boolean(resolveStoryId(year));
+
+  const scrollToStory = (year: string) => {
+    const id = resolveStoryId(year);
+    if (!id) return;
+
+    const el = document.getElementById(id);
     if (!el) return;
 
     el.scrollIntoView({ behavior: "smooth", block: "start" });
     try {
-      window.history.replaceState(null, "", `#${el.id}`);
+      window.history.replaceState(null, "", `#${id}`);
     } catch {}
   };
 
-  const showTooltip = (key: string, candle: Candle, el: HTMLElement | null) => {
-    if (!el || isMobile) return; // ✅ no hover tooltip on mobile
+  const showTooltip = (
+    key: string,
+    candle: Candle,
+    el: HTMLElement | null,
+    opts?: { snapCrosshair?: boolean }
+  ) => {
+    if (!el) return;
     const rect = el.getBoundingClientRect();
-    setHovered({ key, candle, rect });
+    const storyOk = hasStoryForYear(candle.year);
+    setHovered({ key, candle, rect, hasStory: storyOk });
 
-    // ✅ snap crosshair to candle center
+    // snap crosshair to candle center (desktop)
     const plotEl = plotRef.current;
-    if (plotEl) {
+    if (plotEl && (opts?.snapCrosshair ?? true)) {
       const pr = plotEl.getBoundingClientRect();
       const x = clamp(rect.left + rect.width / 2 - pr.left, 0, pr.width);
       const y = clamp(rect.top + rect.height / 2 - pr.top, 0, pr.height);
@@ -280,6 +305,19 @@ export default function CandlestickChart() {
   };
 
   const hideTooltip = () => setHovered(null);
+
+  // ✅ Lock background scroll on mobile while tooltip is open
+  useEffect(() => {
+    if (!isMobile) return;
+    if (!hovered) return;
+
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [hovered, isMobile]);
 
   const onPlotMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobile) return;
@@ -296,12 +334,115 @@ export default function CandlestickChart() {
     hideTooltip();
   };
 
+  const openStoryFromTooltip = () => {
+    if (!hovered?.hasStory) return;
+    const c = hovered.candle;
+    hideTooltip();
+    scrollToStory(c.year);
+  };
+
   const TooltipOverlay = () => {
-    if (!hovered || isMobile) return null;
+    if (!hovered) return null;
 
     const c = hovered.candle;
     const isUp = c.type === "up";
 
+    // ✅ MOBILE: Portal + fixed overlay so nothing can cover it
+    if (isMobile) {
+      const overlay = (
+        <div
+          className="fixed inset-0"
+          style={{ zIndex: 2147483647 }}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            aria-label="Close"
+            className="absolute inset-0 bg-black/45"
+            onClick={() => {
+              setCrosshair(null);
+              hideTooltip();
+            }}
+          />
+
+          <div className="absolute left-3 right-3 bottom-3">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card/95 backdrop-blur-xl shadow-[0_26px_90px_-55px_rgba(0,0,0,0.75)]">
+              <div
+                className="absolute inset-x-0 top-0 h-[2px]"
+                style={{
+                  background: isUp
+                    ? "linear-gradient(90deg, rgba(34,197,94,0.95) 0%, rgba(0,0,0,0) 60%)"
+                    : "linear-gradient(90deg, rgba(239,68,68,0.95) 0%, rgba(0,0,0,0) 60%)",
+                }}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-[12px] text-muted-foreground">{c.year}</div>
+                    <div className="mt-2 text-[16px] font-semibold leading-snug">
+                      {c.title}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="shrink-0 h-9 w-9 rounded-xl border border-border bg-muted/40 text-foreground grid place-items-center"
+                    onClick={() => {
+                      setCrosshair(null);
+                      hideTooltip();
+                    }}
+                    aria-label="Close"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M18 6 6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="mt-3 text-[13px] text-muted-foreground leading-relaxed">
+                  {c.description}
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    className={[
+                      "h-10 px-4 rounded-xl border border-border text-sm font-semibold",
+                      hovered.hasStory
+                        ? "bg-muted/40"
+                        : "bg-muted/20 opacity-60 cursor-not-allowed",
+                    ].join(" ")}
+                    onClick={openStoryFromTooltip}
+                    disabled={!hovered.hasStory}
+                  >
+                    Open story
+                  </button>
+
+                  {hovered.hasStory ? (
+                    <div className="text-[11px] text-muted-foreground">
+                      Tip: tap candle again to jump
+                    </div>
+                  ) : (
+                    <div className="text-[11px] text-muted-foreground">
+                      No story section for this candle
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      return typeof document !== "undefined"
+        ? createPortal(overlay, document.body)
+        : null;
+    }
+
+    // ✅ DESKTOP: keep web behavior the same (anchored tooltip, no portal needed)
     const tooltipW = 390;
     const margin = 12;
 
@@ -330,32 +471,10 @@ export default function CandlestickChart() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
 
             <div className="p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="text-[12px] text-muted-foreground">
-                    {c.year} 
-                  </div>
-                  <div className="mt-2 text-[16px] font-semibold leading-snug">{c.title}</div>
-                </div>
-
-                {/* <span
-                  className={[
-                    "shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-semibold",
-                    isUp
-                      ? "bg-[rgba(34,197,94,0.12)] text-[rgba(16,120,64,1)] border-[rgba(34,197,94,0.25)]"
-                      : "bg-[rgba(239,68,68,0.12)] text-[rgba(164,32,32,1)] border-[rgba(239,68,68,0.25)]",
-                  ].join(" ")}
-                >
-                  {isUp ? "📈 Growth" : "📚 Learning"}
-                </span> */}
-              </div>
-
+              <div className="text-[12px] text-muted-foreground">{c.year}</div>
+              <div className="mt-2 text-[16px] font-semibold leading-snug">{c.title}</div>
               <div className="mt-3 text-[13px] text-muted-foreground leading-relaxed">
                 {c.description}
-              </div>
-
-              <div className="mt-4 flex items-center justify-between text-[12px] text-muted-foreground">
-                
               </div>
             </div>
           </div>
@@ -370,7 +489,6 @@ export default function CandlestickChart() {
     <div className="w-full">
       <TooltipOverlay />
 
-      {/* ✅ Clean structure: Y-axis + plot only */}
       <div className="relative" style={{ height: plotHeight }}>
         {/* Y axis */}
         <div
@@ -436,7 +554,6 @@ export default function CandlestickChart() {
                 style={{ top: crosshair.y, ...dottedLine("x") }}
               />
 
-              {/* ✅ Avatar */}
               <div
                 className="absolute"
                 style={{
@@ -460,9 +577,7 @@ export default function CandlestickChart() {
           {/* Year columns */}
           <div
             className="absolute inset-0 grid"
-            style={{
-              gridTemplateColumns: `repeat(${years.length}, minmax(0, 1fr))`,
-            }}
+            style={{ gridTemplateColumns: `repeat(${years.length}, minmax(0, 1fr))` }}
           >
             {years.map((year) => {
               const items = CANDLE_DATA.filter((d) => d.year === year);
@@ -480,7 +595,6 @@ export default function CandlestickChart() {
                     const centerY = baselineY + (isUp ? -upDownOffsetY : upDownOffsetY);
 
                     const top = clamp(centerY - totalH / 2, 10, plotHeight - totalH - 10);
-
                     const xShift = isUp ? -perYearOffset : perYearOffset;
 
                     return (
@@ -496,10 +610,37 @@ export default function CandlestickChart() {
                         }}
                         role="button"
                         tabIndex={0}
-                        onClick={() => scrollToStory(c.year, isUp ? "green" : "red")}
+                        onClick={(e) => {
+                          const storyOk = hasStoryForYear(c.year);
+
+                          if (isMobile) {
+                            // ✅ If no story exists: only show tooltip
+                            if (!storyOk) {
+                              showTooltip(key, c, e.currentTarget as unknown as HTMLElement, {
+                                snapCrosshair: false,
+                              });
+                              return;
+                            }
+
+                            // ✅ First tap shows tooltip, second tap jumps
+                            if (hovered?.key === key) {
+                              scrollToStory(c.year);
+                              return;
+                            }
+
+                            showTooltip(key, c, e.currentTarget as unknown as HTMLElement, {
+                              snapCrosshair: false,
+                            });
+                            return;
+                          }
+
+                          // ✅ Desktop click jumps (web stays as-is)
+                          if (storyOk) scrollToStory(c.year);
+                        }}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ")
-                            scrollToStory(c.year, isUp ? "green" : "red");
+                          if (e.key === "Enter" || e.key === " ") {
+                            if (hasStoryForYear(c.year)) scrollToStory(c.year);
+                          }
                         }}
                         onMouseEnter={(e) =>
                           showTooltip(key, c, e.currentTarget as unknown as HTMLElement)
@@ -558,28 +699,38 @@ export default function CandlestickChart() {
         </div>
       </div>
 
-      {/* X Axis (years only) */}
+      {/* X Axis */}
       <div className="mt-4 sm:mt-6">
         <div style={{ paddingLeft: leftAxisWidth }}>
           <div
             className="grid text-[10px] sm:text-xs text-muted-foreground"
             style={{ gridTemplateColumns: `repeat(${years.length}, minmax(0, 1fr))` }}
           >
-            {years.map((y) => (
-              <button
-                key={y}
-                type="button"
-                className="text-center hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30 rounded-md py-1"
-                onClick={() => scrollToStory(y, "green")}
-                aria-label={`Jump to ${y} story`}
-              >
-                {y}
-              </button>
-            ))}
+            {years.map((y) => {
+              const ok = hasStoryForYear(y);
+              return (
+                <button
+                  key={y}
+                  type="button"
+                  className={[
+                    "text-center transition-colors rounded-md py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/30",
+                    ok ? "hover:text-foreground" : "opacity-50 cursor-not-allowed",
+                  ].join(" ")}
+                  onClick={() => {
+                    if (!ok) return;
+                    scrollToStory(y);
+                  }}
+                  aria-label={`Jump to ${y} story`}
+                  disabled={!ok}
+                >
+                  {y}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ✅ Legend centered relative to FULL width */}
+        {/* Legend */}
         <div className="mt-4 sm:mt-6 flex items-center justify-center w-full text-xs sm:text-sm">
           <div className="inline-flex items-center justify-center gap-6 sm:gap-8">
             <div className="flex items-center gap-2">

@@ -25,8 +25,9 @@ const Index = () => {
             </p>
           </div>
 
+          {/* ✅ Newest first: 2025 → 2024 → 2022-23 → 2021 → 2020 */}
           <div className="space-y-16 sm:space-y-20">
-            {/* 2025 — RAIL + X LINKS */}
+            {/* 2025 — RAIL + videos from /public */}
             <StorySection
               id="story-2025"
               index={0}
@@ -37,6 +38,14 @@ const Index = () => {
               description="As India Marketing Lead, I built Aethir India end-to-end — positioning, GTM, community, content, partnerships, KOL strategy, and IRL presence across India’s AI × Web3 ecosystem."
               mediaVariant="rail"
               media={[
+                {
+                  kind: "video",
+                  src: "/video1.mp4",
+                  poster: "/videos/2025-1.jpg",
+                  alt: "Aethir — highlight video 1",
+                  label: "Video",
+                  href: "https://x.com",
+                },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3A7445c4de-f61d-44e4-8635-180bf1abcb40%3A6f2732e4-0fdd-43f7-a672-512ad033c0ba.jpeg?table=block&id=2ead6181-d1a7-8040-ac35-f53ed1a13864&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
@@ -50,6 +59,13 @@ const Index = () => {
                   alt: "Aethir — moment 2",
                   label: "Moment",
                   href: "https://x.com",
+                },
+                {
+                  kind: "video",
+                  src: "/videos/2025-2.mp4",
+                  poster: "/videos/2025-2.jpg",
+                  alt: "Aethir — highlight video 2",
+                  label: "Video",
                 },
                 {
                   kind: "image",
@@ -86,7 +102,7 @@ const Index = () => {
               ]}
             />
 
-            {/* 2024 — RAIL + X LINKS */}
+            {/* 2024 — RAIL + videos from /public */}
             <StorySection
               id="story-2024"
               index={1}
@@ -97,6 +113,14 @@ const Index = () => {
               description="At Capx AI, I shifted from community execution to owning growth and ecosystem strategy end-to-end — scaling Capx Collective into a global support system for Web3 and AI builders."
               mediaVariant="rail"
               media={[
+                {
+                  kind: "video",
+                  src: "/videos/2024-1.mp4",
+                  poster: "/videos/2024-1.jpg",
+                  alt: "Capx — highlight video 1",
+                  label: "Video",
+                  href: "https://x.com",
+                },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
@@ -119,11 +143,18 @@ const Index = () => {
                   href: "https://x.com",
                 },
                 {
+                  kind: "video",
+                  src: "/videos/2024-2.mp4",
+                  poster: "/videos/2024-2.jpg",
+                  alt: "Capx — highlight video 2",
+                  label: "Video",
+                },
+                {
                   kind: "image",
-                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 4",
-                  label: "Moment",
-                  href: "https://x.com",
+                  src: "/gifs/2024-1.gif",
+                  alt: "Capx — gif moment",
+                  label: "GIF",
+                  fit: "contain",
                 },
               ]}
               content={[
@@ -144,12 +175,12 @@ const Index = () => {
               ]}
             />
 
-            {/* 2022–2023 — SINGLE IMAGE */}
+            {/* 2022-23 — SINGLE IMAGE (full image, not stretched) */}
             <StorySection
-              id="story-2022-2023"
+              id="story-2022-23"
               index={2}
               type="green"
-              year="2022–2023"
+              year="2022-23"
               title="Scaling communities at speed"
               subtitle="Community Evangelist & Partnerships Associate at Lumos Labs (May 2022 - Dec 2023)"
               description="My time at Lumos Labs marked the transition from building programs to scaling communities at speed — turning interest into long-term participation through campus programs, hackathons, and partnerships."

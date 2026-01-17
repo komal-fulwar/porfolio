@@ -25,7 +25,7 @@ const skillCards = [
     rotation: 7,
     pos: { top: 64, left: 292 },
     z: 3,
-    image: communityImg,
+    image: "https://www.notion.so/image/attachment%3A1350aa23-ebea-4cbd-96f3-89b56845ce2d%3A57d6725f-793b-44f0-8982-a54269803d78.jpeg?table=block&id=2ead6181-d1a7-805e-aea0-d53f3d7e68e1&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
   },
   {
     category: "Content",
