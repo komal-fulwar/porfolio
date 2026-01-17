@@ -172,13 +172,7 @@ const Index = () => {
                   label: "Moment",
                   
                 },
-                 {
-                  kind: "image",
-                  src: "/11.jpeg",
-                  alt: "Aethir — moment 4",
-                  label: "Moment",
-                  
-                },
+               
                 
               ]}
               content={[

@@ -5,7 +5,7 @@ type Tone = "amber" | "blue" | "emerald" | "pink";
 import gtmImg from "./gtm.png";
 import communityImg from "./community.png";
 import contentImg from "./content.png";
-import growthImg from "./growths.png";
+import growthImg from "/11.jpeg";
 
 
 const skillCards = [
@@ -43,7 +43,7 @@ const skillCards = [
     rotation: 8,
     pos: { top: 270, left: 332 },
     z: 1,
-    image: "https://www.notion.so/image/attachment%3Ab31cb33e-a340-44ee-a377-a4f65211cf52%3A6144825a-96e7-4374-982e-e87a37febade.jpeg?table=block&id=2ead6181-d1a7-80a2-9bb0-d3afe1907e15&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+    image: growthImg,
   },
 ];
 
