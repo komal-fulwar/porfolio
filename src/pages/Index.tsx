@@ -26,138 +26,10 @@ const Index = () => {
           </div>
 
           <div className="space-y-16 sm:space-y-20">
-            {/* 2020 — NO IMAGE RAIL */}
-            <StorySection
-              id="story-2020"
-              index={0}
-              type="green"
-              year="2020"
-              title="Spark of curiosity"
-              subtitle="Starting from zero in a Tier-2 city"
-              description="At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra — with no exposure to startups, business jargon, or tech careers. What I did have was curiosity, and one simple idea pushed me into the world of building."
-              mediaVariant="none"
-              content={[
-                "At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra - a Tier-2 city - with no exposure to startups, business jargon, or tech careers. I didn’t know what a pitch deck was, what “skills” meant in a professional sense, or how ideas were supposed to turn into companies.",
-                "What I did have was curiosity!",
-                "I was deeply interested in identifying problems and trying to solve them, and I admired people who built things - entrepreneurs, public speakers, content creators, and women in tech. During the lockdown, a simple tech app idea pushed me to ask a question that changed everything: How do ideas actually become real?",
-                "That question led me into the world of startups, business, marketing, and sales — first as a learner, then as a doer. I taught myself skills by experimenting, building, and failing fast: content creation (design, writing, video), cold emailing, public speaking, operations, marketing, and business development.",
-                "That same early idea eventually earned me my first investment proposal of $200,000 at the age of 16. I didn’t end up pursuing the idea -  but I found something more valuable : direction.",
-                "I realized I wanted to be close to builders, ideas, and ecosystems. And from that moment on, my journey into tech, communities, and onchain ecosystems truly began.",
-              ]}
-              highlights={["First investment proposal of $200,000 at age 16"]}
-            />
-
-            {/* 2021 — NO IMAGE RAIL */}
-            <StorySection
-              id="story-2021"
-              index={1}
-              type="green"
-              year="2021"
-              title="First real community building"
-              subtitle="Program Manager Web3camp at GirlScript Foundation (Sept 2021 - Nov 2022)"
-              description="I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible. What started as a social media internship became my first real lesson in communities, events, and scaling education through community-led growth."
-              mediaVariant="none"
-              content={[
-                "Program Manager Web3camp at Girlscript Foundation (Sept 2021-Nov 2022)",
-                "I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible to everyone. At the time, I didn’t have a grand plan, I just knew I wanted to help people find their way into tech the way I was trying to find mine.",
-                "What started as a social media internship slowly turned into my first real lesson in communities, events, and the Web2 world. Over time, I grew into the role of Program Manager for Web3Camp, a global Web3 bootcamp that would go on to impact thousands of learners across India.",
-                "Web3Camp became my first experience of managing something backed by leading Web3 ecosystems - Polygon, The Graph, Nervos, Sino Global Capital, EPNS. I learned how to design programs, tell stories that attract the right partners, and scale education through community-led growth.",
-              ]}
-            />
-
-            {/* 2022–2023 — SINGLE IMAGE */}
-            <StorySection
-              id="story-2022-2023"
-              index={2}
-              type="green"
-              year="2022–2023"
-              title="Scaling communities at speed"
-              subtitle="Community Evangelist & Partnerships Associate at Lumos Labs (May 2022 - Dec 2023)"
-              description="My time at Lumos Labs marked the transition from building programs to scaling communities at speed — turning interest into long-term participation through campus programs, hackathons, and partnerships."
-              mediaVariant="single"
-              media={[
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A3641fc67-3742-4f1a-8aa2-cbec6d98f5a4%3AI_am_Anshita_Soni_and_here_are_all_your_answers_(1).png?table=block&id=2ead6181-d1a7-802e-ad19-e836c4d7dc51&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Lumos Labs — community & partnerships",
-                },
-              ]}
-              content={[
-                "Community Evangelist and Partnerships Associate at Lumos Labs (May 2022 - December 2023)",
-                "My time at Lumos Labs marked the transition from building programs to scaling communities at speed. As a Community Evangelist and Partnerships Associate, I worked at the intersection of students, developers, and Web3 ecosystems - turning interest into long-term participation.",
-                "I led initiatives that helped Lumos grow its grassroots presence across India, from campus ambassadors to large-scale hackathons. This phase taught me how to manage communities across platforms, collaborate with partners, and keep momentum alive through consistent engagement - both online and on the ground.",
-              ]}
-              highlights={[
-                "Hosted BUILD FOR WEB3 SUMMIT — a 1 day conference in Bangalore",
-                "Led the Lumos Wizard Program (campus ambassadors): structure, incentives, workflows, end-to-end management",
-                "Managed HACK DELHI — a 24-hour offline Web3 hackathon with 200+ builders",
-                "Planned and executed 70+ offline and online events across India",
-                "Built and executed partnerships with developer communities, student groups, DAOs, and institutes",
-              ]}
-            />
-
-            {/* 2024 — RAIL + X LINKS */}
-            <StorySection
-              id="story-2024"
-              index={3}
-              type="green"
-              year="2024"
-              title="Owning growth and ecosystem"
-              subtitle="Head of Growth & Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)"
-              description="At Capx AI, I shifted from community execution to owning growth and ecosystem strategy end-to-end — scaling Capx Collective into a global support system for Web3 and AI builders."
-              mediaVariant="rail"
-              media={[
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 1",
-                  label: "Moment",
-                  href: "https://x.com",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A23ba3d68-a760-4206-be88-b4fae28bcd1a%3AGNh1dAjbYAEAn-p.jpeg?table=block&id=2ead6181-d1a7-80b9-856e-dac90dc91eed&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 2",
-                  label: "Moment",
-                  href: "https://x.com",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A08ab5e2f-75c8-4cf9-9321-6af381bc2ec3%3AGY5YSO8XcAApJ87.jpeg?table=block&id=2ead6181-d1a7-8095-a81e-edd303a761c0&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 3",
-                  label: "Moment",
-                  href: "https://x.com",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 4",
-                  label: "Moment",
-                  href: "https://x.com",
-                },
-              ]}
-              content={[
-                "Head of Growth and Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)",
-                "My time at Capx AI marked a shift from community execution to owning growth and ecosystem strategy end-to-end. As Head of Growth and Ecosystem, I scaled Capx Collective - the community arm of Capx AI turning it into a global support system for Web3 and AI builders.",
-                "What started as an idea quickly grew into a multi-country ecosystem. I focused on creating real value for builders through programs, events, and partnerships while ensuring everything tied back to Capx AI’s long-term growth and developer adoption.",
-                "### Key Highlights",
-              ]}
-              highlights={[
-                "Scaled Capx Collective, impacting 10,000+ students, developers, and builders globally",
-                "Grew and managed a 5,000+ member community across Telegram and X",
-                "Hosted 100+ online and offline events with major Web3 & AI conferences worldwide",
-                "Expanded Capx Collective to 10+ countries (India, Nigeria, Turkey, Thailand, Vietnam, Singapore, UAE, Bolivia, Mexico, France)",
-                "Managed ecosystem programs: Level Up with Capx, Dev Workshops, Builder Program, Hackfest, Capx Taking Over",
-                "Capx Casa (Devcon Bangkok 2024): ran a two-week AI residency + demo day execution",
-                "Capx Captains Program: designed a global ambassador program with 15+ captains",
-                "Berachain India × Capx: ran BERATRAIL (30+ IRL events) → grew community to 2,000+ organic members",
-              ]}
-            />
-
             {/* 2025 — RAIL + X LINKS */}
             <StorySection
               id="story-2025"
-              index={4}
+              index={0}
               type="green"
               year="2025"
               title="Building Aethir India from scratch"
@@ -212,6 +84,135 @@ const Index = () => {
                 "Next in AI podcast + Builders of the Future series (IBW)",
                 "1.5M+ total impressions through organic content, partnerships, and micro-KOL campaigns",
               ]}
+            />
+
+            {/* 2024 — RAIL + X LINKS */}
+            <StorySection
+              id="story-2024"
+              index={1}
+              type="green"
+              year="2024"
+              title="Owning growth and ecosystem"
+              subtitle="Head of Growth & Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)"
+              description="At Capx AI, I shifted from community execution to owning growth and ecosystem strategy end-to-end — scaling Capx Collective into a global support system for Web3 and AI builders."
+              mediaVariant="rail"
+              media={[
+                {
+                  kind: "image",
+                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+                  alt: "Capx — moment 1",
+                  label: "Moment",
+                  href: "https://x.com",
+                },
+                {
+                  kind: "image",
+                  src: "https://www.notion.so/image/attachment%3A23ba3d68-a760-4206-be88-b4fae28bcd1a%3AGNh1dAjbYAEAn-p.jpeg?table=block&id=2ead6181-d1a7-80b9-856e-dac90dc91eed&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+                  alt: "Capx — moment 2",
+                  label: "Moment",
+                  href: "https://x.com",
+                },
+                {
+                  kind: "image",
+                  src: "https://www.notion.so/image/attachment%3A08ab5e2f-75c8-4cf9-9321-6af381bc2ec3%3AGY5YSO8XcAApJ87.jpeg?table=block&id=2ead6181-d1a7-8095-a81e-edd303a761c0&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+                  alt: "Capx — moment 3",
+                  label: "Moment",
+                  href: "https://x.com",
+                },
+                {
+                  kind: "image",
+                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+                  alt: "Capx — moment 4",
+                  label: "Moment",
+                  href: "https://x.com",
+                },
+              ]}
+              content={[
+                "Head of Growth and Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)",
+                "My time at Capx AI marked a shift from community execution to owning growth and ecosystem strategy end-to-end. As Head of Growth and Ecosystem, I scaled Capx Collective - the community arm of Capx AI turning it into a global support system for Web3 and AI builders.",
+                "What started as an idea quickly grew into a multi-country ecosystem. I focused on creating real value for builders through programs, events, and partnerships while ensuring everything tied back to Capx AI’s long-term growth and developer adoption.",
+                "### Key Highlights",
+              ]}
+              highlights={[
+                "Scaled Capx Collective, impacting 10,000+ students, developers, and builders globally",
+                "Grew and managed a 5,000+ member community across Telegram and X",
+                "Hosted 100+ online and offline events with major Web3 & AI conferences worldwide",
+                "Expanded Capx Collective to 10+ countries (India, Nigeria, Turkey, Thailand, Vietnam, Singapore, UAE, Bolivia, Mexico, France)",
+                "Managed ecosystem programs: Level Up with Capx, Dev Workshops, Builder Program, Hackfest, Capx Taking Over",
+                "Capx Casa (Devcon Bangkok 2024): ran a two-week AI residency + demo day execution",
+                "Capx Captains Program: designed a global ambassador program with 15+ captains",
+                "Berachain India × Capx: ran BERATRAIL (30+ IRL events) → grew community to 2,000+ organic members",
+              ]}
+            />
+
+            {/* 2022–2023 — SINGLE IMAGE */}
+            <StorySection
+              id="story-2022-2023"
+              index={2}
+              type="green"
+              year="2022–2023"
+              title="Scaling communities at speed"
+              subtitle="Community Evangelist & Partnerships Associate at Lumos Labs (May 2022 - Dec 2023)"
+              description="My time at Lumos Labs marked the transition from building programs to scaling communities at speed — turning interest into long-term participation through campus programs, hackathons, and partnerships."
+              mediaVariant="single"
+              media={[
+                {
+                  kind: "image",
+                  src: "https://www.notion.so/image/attachment%3A3641fc67-3742-4f1a-8aa2-cbec6d98f5a4%3AI_am_Anshita_Soni_and_here_are_all_your_answers_(1).png?table=block&id=2ead6181-d1a7-802e-ad19-e836c4d7dc51&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
+                  alt: "Lumos Labs — community & partnerships",
+                  fit: "contain",
+                },
+              ]}
+              content={[
+                "Community Evangelist and Partnerships Associate at Lumos Labs (May 2022 - December 2023)",
+                "My time at Lumos Labs marked the transition from building programs to scaling communities at speed. As a Community Evangelist and Partnerships Associate, I worked at the intersection of students, developers, and Web3 ecosystems - turning interest into long-term participation.",
+                "I led initiatives that helped Lumos grow its grassroots presence across India, from campus ambassadors to large-scale hackathons. This phase taught me how to manage communities across platforms, collaborate with partners, and keep momentum alive through consistent engagement - both online and on the ground.",
+              ]}
+              highlights={[
+                "Hosted BUILD FOR WEB3 SUMMIT — a 1 day conference in Bangalore",
+                "Led the Lumos Wizard Program (campus ambassadors): structure, incentives, workflows, end-to-end management",
+                "Managed HACK DELHI — a 24-hour offline Web3 hackathon with 200+ builders",
+                "Planned and executed 70+ offline and online events across India",
+                "Built and executed partnerships with developer communities, student groups, DAOs, and institutes",
+              ]}
+            />
+
+            {/* 2021 — NO IMAGE RAIL */}
+            <StorySection
+              id="story-2021"
+              index={3}
+              type="green"
+              year="2021"
+              title="First real community building"
+              subtitle="Program Manager Web3camp at GirlScript Foundation (Sept 2021 - Nov 2022)"
+              description="I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible. What started as a social media internship became my first real lesson in communities, events, and scaling education through community-led growth."
+              mediaVariant="none"
+              content={[
+                "Program Manager Web3camp at Girlscript Foundation (Sept 2021-Nov 2022)",
+                "I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible to everyone. At the time, I didn’t have a grand plan, I just knew I wanted to help people find their way into tech the way I was trying to find mine.",
+                "What started as a social media internship slowly turned into my first real lesson in communities, events, and the Web2 world. Over time, I grew into the role of Program Manager for Web3Camp, a global Web3 bootcamp that would go on to impact thousands of learners across India.",
+                "Web3Camp became my first experience of managing something backed by leading Web3 ecosystems - Polygon, The Graph, Nervos, Sino Global Capital, EPNS. I learned how to design programs, tell stories that attract the right partners, and scale education through community-led growth.",
+              ]}
+            />
+
+            {/* 2020 — NO IMAGE RAIL */}
+            <StorySection
+              id="story-2020"
+              index={4}
+              type="green"
+              year="2020"
+              title="Spark of curiosity"
+              subtitle="Starting from zero in a Tier-2 city"
+              description="At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra — with no exposure to startups, business jargon, or tech careers. What I did have was curiosity, and one simple idea pushed me into the world of building."
+              mediaVariant="none"
+              content={[
+                "At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra - a Tier-2 city - with no exposure to startups, business jargon, or tech careers. I didn’t know what a pitch deck was, what “skills” meant in a professional sense, or how ideas were supposed to turn into companies.",
+                "What I did have was curiosity!",
+                "I was deeply interested in identifying problems and trying to solve them, and I admired people who built things - entrepreneurs, public speakers, content creators, and women in tech. During the lockdown, a simple tech app idea pushed me to ask a question that changed everything: How do ideas actually become real?",
+                "That question led me into the world of startups, business, marketing, and sales — first as a learner, then as a doer. I taught myself skills by experimenting, building, and failing fast: content creation (design, writing, video), cold emailing, public speaking, operations, marketing, and business development.",
+                "That same early idea eventually earned me my first investment proposal of $200,000 at the age of 16. I didn’t end up pursuing the idea -  but I found something more valuable : direction.",
+                "I realized I wanted to be close to builders, ideas, and ecosystems. And from that moment on, my journey into tech, communities, and onchain ecosystems truly began.",
+              ]}
+              highlights={["First investment proposal of $200,000 at age 16"]}
             />
           </div>
         </div>

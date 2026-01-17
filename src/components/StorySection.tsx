@@ -16,10 +16,17 @@ type MediaVariant = "none" | "single" | "rail";
 
 export interface StoryMediaItem {
   kind: MediaKind;
-  src: string;
+  src: string; // image src or video src
   alt: string;
-  href?: string; // if provided, card becomes clickable (opens in new tab)
+  href?: string;
   label?: string;
+  poster?: string; // optional: for videos
+  /**
+   * How the media should fit inside the 16:9 frame.
+   * - cover (default): fills the frame (may crop)
+   * - contain: shows the full media without cropping
+   */
+  fit?: "cover" | "contain";
 }
 
 interface StorySectionProps {
@@ -31,9 +38,8 @@ interface StorySectionProps {
   index: number;
   id?: string;
 
-  // NEW
-  content?: string[]; // paragraphs / blocks
-  highlights?: string[]; // bullet highlights
+  content?: string[];
+  highlights?: string[];
 
   mediaVariant?: MediaVariant;
   media?: StoryMediaItem[];
@@ -97,7 +103,9 @@ function RichBlock({
 
       {highlights?.length ? (
         <div className="pt-2">
-          <div className="text-sm font-semibold text-foreground">Key highlights</div>
+          <div className="text-sm font-semibold text-foreground">
+            Key highlights
+          </div>
           <ul className="mt-3 space-y-2">
             {highlights.map((h) => (
               <li key={h} className="flex gap-3">
@@ -138,6 +146,7 @@ export default function StorySection({
   const [paused, setPaused] = useState(false);
 
   const viewportRef = useRef<HTMLDivElement | null>(null);
+  const [vpW, setVpW] = useState(0);
   const [cardW, setCardW] = useState<number>(420);
   const gap = isMobile ? 14 : 18;
 
@@ -146,22 +155,19 @@ export default function StorySection({
     return media;
   }, [media]);
 
-  const loopCards = useMemo(() => {
-    if (!showRail) return [];
-    return [...cards, ...cards];
-  }, [cards, showRail]);
-
+  // measure viewport width (used to repeat enough cards so it never "ends")
   useEffect(() => {
     if (!showRail) return;
 
     const calc = () => {
-      const vp =
-        viewportRef.current?.getBoundingClientRect().width ?? window.innerWidth;
+      const rect = viewportRef.current?.getBoundingClientRect();
+      const w = rect?.width ?? window.innerWidth;
+      setVpW(w);
 
       if (isMobile) {
-        setCardW(Math.max(260, Math.min(340, Math.floor(vp * 0.82))));
+        setCardW(Math.max(260, Math.min(340, Math.floor(w * 0.82))));
       } else {
-        setCardW(Math.max(380, Math.min(520, Math.floor(vp * 0.28))));
+        setCardW(Math.max(380, Math.min(520, Math.floor(w * 0.28))));
       }
     };
 
@@ -170,20 +176,39 @@ export default function StorySection({
     return () => window.removeEventListener("resize", calc);
   }, [isMobile, showRail]);
 
-  const loopDistance = useMemo(() => {
+  // one "base" loop distance (only original cards count)
+  const baseLoopDistance = useMemo(() => {
     if (!showRail) return 0;
+    if (!cards.length) return 0;
     return (cardW + gap) * cards.length;
   }, [showRail, cardW, gap, cards.length]);
+
+  // ✅ build a long enough sequence so there's NEVER a visible end on ultra-wide screens
+  const loopCards = useMemo(() => {
+    if (!showRail) return [];
+    if (!cards.length) return [];
+
+    // minimum total width we want rendered:
+    // viewport + 2 loops buffer (so wrap is never visible)
+    const minTotal = (vpW || 1200) + baseLoopDistance * 2;
+
+    const oneSetW = (cardW + gap) * cards.length;
+    const repeats = Math.max(3, Math.ceil(minTotal / Math.max(1, oneSetW)));
+
+    const out: StoryMediaItem[] = [];
+    for (let r = 0; r < repeats; r++) out.push(...cards);
+    return out;
+  }, [showRail, cards, vpW, baseLoopDistance, cardW, gap]);
 
   // ✅ NO-GLITCH infinite loop (wrap math, no snapping)
   useEffect(() => {
     if (!showRail) return;
-    if (!loopDistance) return;
+    if (!baseLoopDistance) return;
 
     let raf = 0;
     let last = performance.now();
-    const duration = isMobile ? 22 : 20;
-    const speed = loopDistance / duration;
+    const duration = isMobile ? 22 : 20; // same feel
+    const speed = baseLoopDistance / duration; // px/sec
 
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
@@ -191,8 +216,11 @@ export default function StorySection({
 
       if (!paused) {
         let next = x.get() - speed * dt;
-        if (next <= -loopDistance) next += loopDistance;
-        if (next > 0) next -= loopDistance;
+
+        // wrap smoothly using ONLY baseLoopDistance (one original set)
+        if (next <= -baseLoopDistance) next += baseLoopDistance;
+        if (next > 0) next -= baseLoopDistance;
+
         x.set(next);
       }
 
@@ -201,7 +229,7 @@ export default function StorySection({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [paused, loopDistance, isMobile, x, showRail]);
+  }, [paused, baseLoopDistance, isMobile, x, showRail]);
 
   const dotClass =
     type === "green"
@@ -235,6 +263,9 @@ export default function StorySection({
   const hasReadMore = Boolean(
     (content && content.length) || (highlights && highlights.length)
   );
+
+  const fitClass = (fit?: StoryMediaItem["fit"]) =>
+    fit === "contain" ? "object-contain" : "object-cover";
 
   const single = showSingle ? cards[0] : null;
 
@@ -304,7 +335,9 @@ export default function StorySection({
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent className="max-w-[860px] p-0 overflow-hidden">
+                  <DialogContent
+                    className="w-[calc(100vw-24px)] max-w-[calc(100vw-24px)] sm:max-w-[860px] p-0 overflow-hidden"
+                  >
                     <div className="p-5 sm:p-6 border-b border-border">
                       <DialogHeader>
                         <DialogTitle className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">
@@ -316,7 +349,7 @@ export default function StorySection({
                       </DialogHeader>
                     </div>
 
-                    <ScrollArea className="max-h-[72vh]">
+                    <ScrollArea className="max-h-[80vh] sm:max-h-[72vh]">
                       <div className="p-5 sm:p-6">
                         <RichBlock content={content} highlights={highlights} />
                       </div>
@@ -351,13 +384,26 @@ export default function StorySection({
                 />
                 <div className="relative rounded-[1.4rem] border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)]">
                   <div className="relative aspect-[16/9] bg-muted/35">
-                    <img
-                      src={single.src}
-                      alt={single.alt}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      draggable={false}
-                    />
+                    {single.kind === "video" ? (
+                      <video
+                        className={`h-full w-full ${fitClass(single.fit)}`}
+                        src={single.src}
+                        poster={single.poster}
+                        muted
+                        playsInline
+                        loop
+                        autoPlay
+                        preload="metadata"
+                      />
+                    ) : (
+                      <img
+                        src={single.src}
+                        alt={single.alt}
+                        className={`h-full w-full ${fitClass(single.fit)}`}
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    )}
                     <div className="pointer-events-none absolute inset-0 rounded-[1.4rem] bg-gradient-to-br from-white/14 via-transparent to-transparent" />
                   </div>
                 </div>
@@ -367,124 +413,148 @@ export default function StorySection({
         ) : null
       ) : showRail && cards.length ? (
         <div className="relative mt-14 sm:mt-16">
-          <div className="relative isolate overflow-visible lg:mx-[calc(50%-50vw)]">
-            <div
-              ref={viewportRef}
-              className={[
-                "relative z-10 overflow-visible",
-                isMobile ? "pt-10 pb-10" : "pt-14 pb-16",
-              ].join(" ")}
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-            >
-              <motion.div
-                className="flex items-center will-change-transform"
-                style={{
-                  x,
-                  gap,
-                  paddingLeft: isMobile ? 16 : 64,
-                  paddingRight: isMobile ? 16 : 64,
-                }}
-                drag="x"
-                dragConstraints={{ left: -999999, right: 999999 }}
-                dragElastic={0.06}
-                onDragStart={() => setPaused(true)}
-                onDragEnd={() => setPaused(false)}
+          {/* ✅ Prevent page-level horizontal overflow */}
+          <div className="relative overflow-x-hidden">
+            {/* ✅ Full-bleed rail without widening the document */}
+            <div className="relative left-1/2 w-screen -translate-x-1/2">
+              <div
+                ref={viewportRef}
+                className={[
+                  "relative z-10",
+                  isMobile ? "pt-10 pb-10" : "pt-14 pb-16",
+                ].join(" ")}
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
               >
-                {loopCards.map((c, i) => {
-                  const clickable = Boolean(c.href);
-                  const showX = isXLink(c.href);
+                <motion.div
+                  className="flex items-center will-change-transform"
+                  style={{
+                    x,
+                    gap,
+                    paddingLeft: isMobile ? 16 : 64,
+                    paddingRight: isMobile ? 16 : 64,
+                  }}
+                  drag="x"
+                  dragConstraints={{ left: -999999, right: 999999 }}
+                  dragElastic={0.06}
+                  onDragStart={() => setPaused(true)}
+                  onDragEnd={() => setPaused(false)}
+                >
+                  {loopCards.map((c, i) => {
+                    const clickable = Boolean(c.href);
+                    const showX = isXLink(c.href);
 
-                  const Wrapper: any = clickable ? "a" : "div";
-                  const wrapperProps = clickable
-                    ? { href: c.href, target: "_blank", rel: "noreferrer" }
-                    : {};
+                    const Wrapper: any = clickable ? "a" : "div";
+                    const wrapperProps = clickable
+                      ? { href: c.href, target: "_blank", rel: "noreferrer" }
+                      : {};
 
-                  return (
-                    <motion.div
-                      key={`${c.src}-${i}`}
-                      className="shrink-0 relative z-20"
-                      style={{ width: cardW, y: floatLift }}
-                      whileHover={
-                        isMobile ? undefined : { y: floatLift - 4, rotate: hoverRotate }
-                      }
-                      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                    >
-                      <Wrapper
-                        {...wrapperProps}
-                        className={[
-                          "relative block rounded-2xl",
-                          clickable
-                            ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25 dark:focus-visible:ring-white/20"
-                            : "cursor-default",
-                        ].join(" ")}
+                    return (
+                      <motion.div
+                        key={`${c.src}-${i}`}
+                        className="shrink-0 relative z-20"
+                        style={{ width: cardW, y: floatLift }}
+                        whileHover={
+                          isMobile
+                            ? undefined
+                            : { y: floatLift - 4, rotate: hoverRotate }
+                        }
+                        transition={{ type: "spring", stiffness: 260, damping: 22 }}
                       >
-                        <div
+                        <Wrapper
+                          {...wrapperProps}
                           className={[
-                            "absolute -inset-0.5 rounded-[1.35rem] -z-10",
-                            plateBg,
-                            "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
-                            "translate-x-2 translate-y-2",
+                            "relative block rounded-2xl",
+                            clickable
+                              ? "cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-black/25 dark:focus-visible:ring-white/20"
+                              : "cursor-default",
                           ].join(" ")}
-                        />
+                        >
+                          <div
+                            className={[
+                              "absolute -inset-0.5 rounded-[1.35rem] -z-10",
+                              plateBg,
+                              "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
+                              "translate-x-2 translate-y-2",
+                            ].join(" ")}
+                          />
 
-                        <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
-                          <div className="relative aspect-[16/9] bg-muted/35">
-                            <img
-                              src={c.src}
-                              alt={c.alt}
-                              className="h-full w-full object-cover"
-                              loading="lazy"
-                              draggable={false}
-                            />
+                          <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
+                            <div className="relative aspect-[16/9] bg-muted/35">
+                              {c.kind === "video" ? (
+                                <video
+                                  className={`h-full w-full ${fitClass(c.fit)}`}
+                                  src={c.src}
+                                  poster={c.poster}
+                                  muted
+                                  playsInline
+                                  loop
+                                  autoPlay
+                                  preload="metadata"
+                                />
+                              ) : (
+                                <img
+                                  src={c.src}
+                                  alt={c.alt}
+                                  className={`h-full w-full ${fitClass(c.fit)}`}
+                                  loading="lazy"
+                                  draggable={false}
+                                />
+                              )}
 
-                            {c.kind === "video" ? (
-                              <div className="absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
-                                <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">
-                                  <svg
-                                    width="18"
-                                    height="18"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    aria-hidden="true"
-                                    className="text-black dark:text-white"
-                                  >
-                                    <path
-                                      d="M9 18V6l12 6-12 6Z"
-                                      fill="currentColor"
-                                    />
-                                  </svg>
+                              {/* overlay play icon for video */}
+                              {c.kind === "video" ? (
+                                <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
+                                  <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">
+                                    <svg
+                                      width="18"
+                                      height="18"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      aria-hidden="true"
+                                      className="text-black dark:text-white"
+                                    >
+                                      <path
+                                        d="M9 18V6l12 6-12 6Z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </div>
                                 </div>
+                              ) : null}
+
+                              <div className="absolute left-3 top-3">
+                                <span className="bc-pill">{c.label ?? "Story"}</span>
                               </div>
-                            ) : null}
-
-                            <div className="absolute left-3 top-3">
-                              <span className="bc-pill">{c.label ?? "Story"}</span>
                             </div>
-                          </div>
 
-                          <div className="p-4 min-h-[64px]">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="text-sm font-semibold">{year} moment</div>
-                              {clickable ? (
-                                <div className="text-xs text-muted-foreground">Open ↗</div>
+                            <div className="p-4 min-h-[64px]">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="text-sm font-semibold">
+                                  {year} moment
+                                </div>
+                                {clickable ? (
+                                  <div className="text-xs text-muted-foreground">
+                                    Open ↗
+                                  </div>
+                                ) : null}
+                              </div>
+
+                              {showX ? (
+                                <div className="mt-1 text-xs text-muted-foreground">
+                                  View on X
+                                </div>
                               ) : null}
                             </div>
 
-                            {showX ? (
-                              <div className="mt-1 text-xs text-muted-foreground">
-                                View on X
-                              </div>
-                            ) : null}
+                            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/14 via-transparent to-transparent" />
                           </div>
-
-                          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/14 via-transparent to-transparent" />
-                        </div>
-                      </Wrapper>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+                        </Wrapper>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
