@@ -16,16 +16,11 @@ type MediaVariant = "none" | "single" | "rail";
 
 export interface StoryMediaItem {
   kind: MediaKind;
-  src: string; // image src or video src
+  src: string;
   alt: string;
   href?: string;
   label?: string;
-  poster?: string; // optional: for videos
-  /**
-   * How the media should fit inside the 16:9 frame.
-   * - cover (default): fills the frame (may crop)
-   * - contain: shows the full media without cropping
-   */
+  poster?: string;
   fit?: "cover" | "contain";
 }
 
@@ -155,7 +150,6 @@ export default function StorySection({
     return media;
   }, [media]);
 
-  // measure viewport width (used to repeat enough cards so it never "ends")
   useEffect(() => {
     if (!showRail) return;
 
@@ -176,22 +170,17 @@ export default function StorySection({
     return () => window.removeEventListener("resize", calc);
   }, [isMobile, showRail]);
 
-  // one "base" loop distance (only original cards count)
   const baseLoopDistance = useMemo(() => {
     if (!showRail) return 0;
     if (!cards.length) return 0;
     return (cardW + gap) * cards.length;
   }, [showRail, cardW, gap, cards.length]);
 
-  // ✅ build a long enough sequence so there's NEVER a visible end on ultra-wide screens
   const loopCards = useMemo(() => {
     if (!showRail) return [];
     if (!cards.length) return [];
 
-    // minimum total width we want rendered:
-    // viewport + 2 loops buffer (so wrap is never visible)
     const minTotal = (vpW || 1200) + baseLoopDistance * 2;
-
     const oneSetW = (cardW + gap) * cards.length;
     const repeats = Math.max(3, Math.ceil(minTotal / Math.max(1, oneSetW)));
 
@@ -200,15 +189,14 @@ export default function StorySection({
     return out;
   }, [showRail, cards, vpW, baseLoopDistance, cardW, gap]);
 
-  // ✅ NO-GLITCH infinite loop (wrap math, no snapping)
   useEffect(() => {
     if (!showRail) return;
     if (!baseLoopDistance) return;
 
     let raf = 0;
     let last = performance.now();
-    const duration = isMobile ? 22 : 20; // same feel
-    const speed = baseLoopDistance / duration; // px/sec
+    const duration = isMobile ? 22 : 20;
+    const speed = baseLoopDistance / duration;
 
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
@@ -216,11 +204,8 @@ export default function StorySection({
 
       if (!paused) {
         let next = x.get() - speed * dt;
-
-        // wrap smoothly using ONLY baseLoopDistance (one original set)
         if (next <= -baseLoopDistance) next += baseLoopDistance;
         if (next > 0) next -= baseLoopDistance;
-
         x.set(next);
       }
 
@@ -246,17 +231,6 @@ export default function StorySection({
       ? "border-[hsl(var(--candle-green))]/20"
       : "border-[hsl(var(--candle-red))]/20";
 
-  const plateBg =
-    type === "green"
-      ? "bg-[hsl(var(--candle-green))]/10"
-      : "bg-[hsl(var(--candle-red))]/8";
-
-  const isXLink = (href?: string) => {
-    if (!href) return false;
-    const h = href.toLowerCase();
-    return h.includes("x.com") || h.includes("twitter.com");
-  };
-
   const floatLift = isMobile ? 0 : -10;
   const hoverRotate = fromRight ? -1.2 : 1.2;
 
@@ -268,6 +242,12 @@ export default function StorySection({
     fit === "contain" ? "object-contain" : "object-cover";
 
   const single = showSingle ? cards[0] : null;
+
+  // outer frame background like your screenshot
+  const singleFrameBg =
+    type === "green"
+      ? "bg-[hsl(var(--candle-green))]/10"
+      : "bg-[hsl(var(--candle-red))]/8";
 
   return (
     <motion.section
@@ -364,7 +344,7 @@ export default function StorySection({
       {showNone ? null : showSingle ? (
         single ? (
           <div className="relative mt-10 sm:mt-12">
-            <div className="mx-auto max-w-[760px] px-3 sm:px-0">
+            <div className="mx-auto max-w-[1100px] px-3 sm:px-0">
               <motion.div
                 className="relative"
                 initial={{ opacity: 0, y: 10 }}
@@ -372,38 +352,44 @@ export default function StorySection({
                 viewport={{ once: true, margin: "-120px" }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
+                {/* ✅ EXACT: outer rounded frame + padding like your screenshot */}
                 <div
                   className={[
-                    "absolute -inset-0.5 rounded-[1.6rem] -z-10",
-                    plateBg,
-                    "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
-                    "translate-x-2 translate-y-2",
+                    "relative overflow-hidden rounded-[2.4rem]",
+                    singleFrameBg,
+                    "p-4 sm:p-6",
+                    "shadow-[0_26px_90px_-65px_rgba(0,0,0,0.55)]",
                   ].join(" ")}
-                />
-                <div className="relative rounded-[1.4rem] border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)]">
-                  <div className="relative aspect-[16/9] bg-muted/35">
-                    {single.kind === "video" ? (
-                      <video
-                        className={"h-full w-full " + fitClass(single.fit)}
-                        src={single.src}
-                        poster={single.poster}
-                        preload="metadata"
-                        muted
-                        playsInline
-                        loop
-                        autoPlay
-                      />
-                    ) : (
-                      <img
-                        src={single.src}
-                        alt={single.alt}
-                        className={"h-full w-full " + fitClass(single.fit)}
-                        loading="lazy"
-                        draggable={false}
-                      />
-                    )}
-                    <div className="pointer-events-none absolute inset-0 rounded-[1.4rem] bg-gradient-to-br from-white/14 via-transparent to-transparent" />
+                >
+                  {/* inner rounded image */}
+                  <div className="relative overflow-hidden rounded-[2rem] bg-muted/20">
+                    {/* wide collage aspect */}
+                    <div className="relative aspect-[2.35/1] sm:aspect-[2.5/1]">
+                      {single.kind === "video" ? (
+                        <video
+                          className={"h-full w-full " + fitClass(single.fit)}
+                          src={single.src}
+                          poster={single.poster}
+                          preload="metadata"
+                          muted
+                          playsInline
+                          loop
+                          autoPlay
+                        />
+                      ) : (
+                        <img
+                          src={single.src}
+                          alt={single.alt}
+                          className={"h-full w-full " + fitClass(single.fit)}
+                          loading="lazy"
+                          draggable={false}
+                        />
+                      )}
+                    </div>
                   </div>
+
+                  {/* subtle sheen */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/16 via-transparent to-transparent" />
                 </div>
               </motion.div>
             </div>
@@ -411,9 +397,7 @@ export default function StorySection({
         ) : null
       ) : showRail && cards.length ? (
         <div className="relative mt-14 sm:mt-16">
-          {/* ✅ Prevent page-level horizontal overflow */}
           <div className="relative overflow-x-hidden">
-            {/* ✅ Full-bleed rail without widening the document */}
             <div className="relative left-1/2 w-screen -translate-x-1/2">
               <div
                 ref={viewportRef}
@@ -440,7 +424,6 @@ export default function StorySection({
                 >
                   {loopCards.map((c, i) => {
                     const clickable = Boolean(c.href);
-                    const showX = isXLink(c.href);
 
                     const Wrapper: any = clickable ? "a" : "div";
                     const wrapperProps = clickable
@@ -457,7 +440,11 @@ export default function StorySection({
                             ? undefined
                             : { y: floatLift - 4, rotate: hoverRotate }
                         }
-                        transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 260,
+                          damping: 22,
+                        }}
                       >
                         <Wrapper
                           {...wrapperProps}
@@ -468,15 +455,6 @@ export default function StorySection({
                               : "cursor-default",
                           ].join(" ")}
                         >
-                          <div
-                            className={[
-                              "absolute -inset-0.5 rounded-[1.35rem] -z-10",
-                              plateBg,
-                              "shadow-[0_30px_90px_-55px_rgba(0,0,0,0.65)]",
-                              "translate-x-2 translate-y-2",
-                            ].join(" ")}
-                          />
-
                           <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
                             <div className="relative aspect-[16/9] bg-muted/35">
                               {c.kind === "video" ? (
@@ -500,7 +478,6 @@ export default function StorySection({
                                 />
                               )}
 
-                              {/* overlay play icon for video */}
                               {c.kind === "video" ? (
                                 <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
                                   <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">
@@ -518,29 +495,6 @@ export default function StorySection({
                                       />
                                     </svg>
                                   </div>
-                                </div>
-                              ) : null}
-
-                              <div className="absolute left-3 top-3">
-                                <span className="bc-pill">{c.label ?? "Story"}</span>
-                              </div>
-                            </div>
-
-                            <div className="p-4 min-h-[64px]">
-                              <div className="flex items-center justify-between gap-3">
-                                <div className="text-sm font-semibold">
-                                  {year} moment
-                                </div>
-                                {clickable ? (
-                                  <div className="text-xs text-muted-foreground">
-                                    Open ↗
-                                  </div>
-                                ) : null}
-                              </div>
-
-                              {showX ? (
-                                <div className="mt-1 text-xs text-muted-foreground">
-                                  View on X
                                 </div>
                               ) : null}
                             </div>

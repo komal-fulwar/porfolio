@@ -17,12 +17,7 @@ const Index = () => {
             <div className="inline-flex mb-5">
               <span className="bc-pill-dark">Journey</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
-              Journey
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg">
-              The moments that shaped everything — lessons, leaps, and the compounding effect of showing up.
-            </p>
+         
           </div>
 
           {/* ✅ Newest first: 2025 → 2024 → 2022-23 → 2021 → 2020 */}
@@ -44,7 +39,7 @@ const Index = () => {
                   poster: "/videos/2025-1.jpg",
                   alt: "Aethir — highlight video 1",
                   label: "Video",
-                  href: "https://x.com",
+                  href: "https://x.com/AethirIndia/status/1937520550014018030?s=20",
                 },
                 {
                   kind: "image",
@@ -62,25 +57,129 @@ const Index = () => {
                 },
                 {
                   kind: "video",
-                  src: "/videos/2025-2.mp4",
-                  poster: "/videos/2025-2.jpg",
+                  src: "/video2.mp4",
+                  poster: "/videos/2025-1.jpg",
                   alt: "Aethir — highlight video 2",
                   label: "Video",
+                  href:"https://x.com/AethirIndia/status/2003155130477347102?s=20](https://x.com/AethirIndia/status/2003155130477347102?s=20",
                 },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3A548bd38e-ef9d-4a94-8ba4-0dbc2472ae6c%3A402de0ba-9c38-4307-a6c2-188cb75f8222.jpeg?table=block&id=2ead6181-d1a7-801e-9201-e19a4d64e9b8&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
                   alt: "Aethir — moment 3",
                   label: "Moment",
-                  href: "https://x.com",
+                  
+                },
+                {
+                  kind: "video",
+                  src: "/video3.mp4",
+                  poster: "/videos/2025-1.jpg",
+                  alt: "Aethir — highlight video 2",
+                  label: "Video",
+                  href:"https://x.com/AethirIndia/status/1969011434886398426?s=20](https://x.com/AethirIndia/status/1969011434886398426?s=20 ",
                 },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3A23c4d3e5-5ca5-4c92-a789-448c00608b7b%3A679f3323-fd3e-44ad-b05c-dbd49e83b9fd.jpeg?table=block&id=2ead6181-d1a7-8032-a1d1-f30796727d75&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
                   alt: "Aethir — moment 4",
                   label: "Moment",
-                  href: "https://x.com",
+                  
                 },
+                  {
+                  kind: "image",
+                  src: "/1.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/2.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/3.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/4.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "video",
+                  src: "/video3.mp4",
+                  poster: "/videos/2025-1.jpg",
+                  alt: "Aethir — highlight video 2",
+                  label: "Video",
+                  href:"https://x.com/AethirIndia/status/1969011434886398426?s=20](https://x.com/AethirIndia/status/1969011434886398426?s=20 ",
+                },
+                 {
+                  kind: "image",
+                  src: "/5.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/6.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                
+                 {
+                  kind: "image",
+                  src: "/7.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/8.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "video",
+                  src: "/video2.mp4",
+                  poster: "/videos/2025-1.jpg",
+                  alt: "Aethir — highlight video 2",
+                  label: "Video",
+                  href:"https://x.com/AethirIndia/status/2003155130477347102?s=20](https://x.com/AethirIndia/status/2003155130477347102?s=20",
+                },
+                 {
+                  kind: "image",
+                  src: "/9.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/10.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                 {
+                  kind: "image",
+                  src: "/11.jpeg",
+                  alt: "Aethir — moment 4",
+                  label: "Moment",
+                  
+                },
+                
               ]}
               content={[
                 "India Marketing Lead at Aethir (Feb 2025 - Jan 2026)",
@@ -126,21 +225,21 @@ const Index = () => {
                   src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
                   alt: "Capx — moment 1",
                   label: "Moment",
-                  href: "https://x.com",
+                 
                 },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3A23ba3d68-a760-4206-be88-b4fae28bcd1a%3AGNh1dAjbYAEAn-p.jpeg?table=block&id=2ead6181-d1a7-80b9-856e-dac90dc91eed&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
                   alt: "Capx — moment 2",
                   label: "Moment",
-                  href: "https://x.com",
+                 
                 },
                 {
                   kind: "image",
                   src: "https://www.notion.so/image/attachment%3A08ab5e2f-75c8-4cf9-9321-6af381bc2ec3%3AGY5YSO8XcAApJ87.jpeg?table=block&id=2ead6181-d1a7-8095-a81e-edd303a761c0&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
                   alt: "Capx — moment 3",
                   label: "Moment",
-                  href: "https://x.com",
+                  
                 },
                 {
                   kind: "video",
@@ -148,6 +247,7 @@ const Index = () => {
                   poster: "/videos/2024-2.jpg",
                   alt: "Capx — highlight video 2",
                   label: "Video",
+                  
                 },
                 {
                   kind: "image",
