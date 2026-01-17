@@ -243,12 +243,6 @@ export default function StorySection({
 
   const single = showSingle ? cards[0] : null;
 
-  // outer frame background like your screenshot
-  const singleFrameBg =
-    type === "green"
-      ? "bg-[hsl(var(--candle-green))]/10"
-      : "bg-[hsl(var(--candle-red))]/8";
-
   return (
     <motion.section
       id={id}
@@ -352,44 +346,32 @@ export default function StorySection({
                 viewport={{ once: true, margin: "-120px" }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
-                {/* ✅ EXACT: outer rounded frame + padding like your screenshot */}
-                <div
-                  className={[
-                    "relative overflow-hidden rounded-[2.4rem]",
-                    singleFrameBg,
-                    "p-4 sm:p-6",
-                    "shadow-[0_26px_90px_-65px_rgba(0,0,0,0.55)]",
-                  ].join(" ")}
-                >
-                  {/* inner rounded image */}
-                  <div className="relative overflow-hidden rounded-[2rem] bg-muted/20">
-                    {/* wide collage aspect */}
-                    <div className="relative aspect-[2.35/1] sm:aspect-[2.5/1]">
-                      {single.kind === "video" ? (
-                        <video
-                          className={"h-full w-full " + fitClass(single.fit)}
-                          src={single.src}
-                          poster={single.poster}
-                          preload="metadata"
-                          muted
-                          playsInline
-                          loop
-                          autoPlay
-                        />
-                      ) : (
-                        <img
-                          src={single.src}
-                          alt={single.alt}
-                          className={"h-full w-full " + fitClass(single.fit)}
-                          loading="lazy"
-                          draggable={false}
-                        />
-                      )}
-                    </div>
+                {/* ✅ just the image with rounded border (no outer frame/padding) */}
+                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_26px_90px_-65px_rgba(0,0,0,0.55)]">
+                  <div className="relative aspect-[2.35/1] sm:aspect-[2.5/1] bg-muted/25">
+                    {single.kind === "video" ? (
+                      <video
+                        className={"h-full w-full " + fitClass(single.fit)}
+                        src={single.src}
+                        poster={single.poster}
+                        preload="metadata"
+                        muted
+                        playsInline
+                        loop
+                        autoPlay
+                      />
+                    ) : (
+                      <img
+                        src={single.src}
+                        alt={single.alt}
+                        className={"h-full w-full " + fitClass(single.fit)}
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    )}
                   </div>
 
-                  {/* subtle sheen */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/16 via-transparent to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/14 via-transparent to-transparent" />
                 </div>
               </motion.div>
             </div>
@@ -478,6 +460,7 @@ export default function StorySection({
                                 />
                               )}
 
+                              {/* optional play hint */}
                               {c.kind === "video" ? (
                                 <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
                                   <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">

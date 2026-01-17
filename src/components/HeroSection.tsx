@@ -86,6 +86,7 @@ const HeroSection = () => {
             A visual journey through my career - the highs, the lows, and everything in between.
             <span className="font-medium text-[hsl(var(--candle-green-dark))]"> Green candles</span> for wins,
             <span className="font-medium text-[hsl(var(--candle-red-dark))]"> red candles</span> for lessons learned.
+           <br></br> Tap on candles to start.
           </p>
 
           <motion.div

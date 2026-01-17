@@ -3,39 +3,18 @@ import { Linkedin, Twitter, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const socialLinks = [
-  { name: "LinkedIn", icon: Linkedin, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
-  { name: "Telegram", icon: Send, href: "#" },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    href: "https://www.linkedin.com/in/anshita-soni-630796211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  },
+  { name: "Twitter", icon: Twitter, href: "https://x.com/anshitaksoni" },
+  { name: "Telegram", icon: Send, href: "https://t.me/anshitaksoni1" },
 ];
 
-// ✅ Tiny “temp resume” PDF (works immediately)
-// You can replace this later with a real file in /public and just link it.
-const TEMP_PDF_BASE64 =
-  "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA5MSA+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjcyIDcyMCBUZAooVGVtcG9yYXJ5IFJlc3VtZSBQbGFjZWhvbGRlcikgVGoKMCAtMzYgVGQKKEFkZCB5b3VyIHJlYWwgUERGIGxhdGVyLikgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAowMDAwMDAwMjQxIDAwMDAwIG4gCjAwMDAwMDAzODMgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgo0NTMKJSVFT0YK";
-
-function downloadTempPdf() {
-  const byteChars = atob(TEMP_PDF_BASE64);
-  const byteNumbers = new Array(byteChars.length);
-  for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
-
-  const blob = new Blob([new Uint8Array(byteNumbers)], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Anshita-Resume-Temp.pdf";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  URL.revokeObjectURL(url);
-}
-
 function openTelegram() {
-  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
-  const text = "Hi Anshita — would love to connect!";
-  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(text)}`;
-  window.open(shareUrl, "_blank", "noopener,noreferrer");
+  const url = "https://t.me/anshitaksoni1";
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 const Footer = () => {
@@ -65,13 +44,10 @@ const Footer = () => {
                 Collaborate, chat about ideas, or just say hi — I’m always up for a good conversation.
               </p>
 
+              {/* ✅ Only Telegram CTA */}
               <div className="mt-6 flex justify-center gap-3 flex-wrap">
                 <Button className="bc-hoverlift bc-hovershadow" onClick={openTelegram}>
                   Message Me
-                </Button>
-
-                <Button variant="outline" className="bc-hoverlift" onClick={downloadTempPdf}>
-                  Download Resume
                 </Button>
               </div>
 
@@ -82,6 +58,8 @@ const Footer = () => {
                     <a
                       key={link.name}
                       href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
                       className={[
                         "inline-flex items-center gap-2 rounded-full border border-border",
                         "bg-card/70 backdrop-blur px-4 py-2 text-sm font-medium",
