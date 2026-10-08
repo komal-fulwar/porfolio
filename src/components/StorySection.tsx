@@ -40,6 +40,46 @@ interface StorySectionProps {
   media?: StoryMediaItem[];
 }
 
+function LazyVideo({ src, poster, fit }: { src: string; poster?: string; fit?: "cover" | "contain" }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch(() => {});
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.1, rootMargin: "200px" }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
+      src={src}
+      poster={poster}
+      preload="none"
+      loop
+      muted
+      playsInline
+      defaultMuted
+      referrerPolicy="no-referrer"
+    />
+  );
+}
+
 function RichBlock({
   content,
   highlights,
@@ -195,8 +235,7 @@ export default function StorySection({
 
     let raf = 0;
     let last = performance.now();
-    const duration = isMobile ? 22 : 20;
-    const speed = baseLoopDistance / duration;
+    const speed = isMobile ? 60 : 75;
 
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
@@ -286,7 +325,7 @@ export default function StorySection({
               </div>
             </div>
 
-            <h3 className="mt-4 text-[18px] sm:text-[20px] font-semibold leading-tight tracking-[-0.02em]">
+            <h3 className="mt-4 text-[22px] sm:text-[26px] font-display font-medium leading-snug tracking-tight">
               <span className={accentText}>{title}</span>
             </h3>
 
@@ -337,7 +376,7 @@ export default function StorySection({
       {/* MEDIA */}
       {showNone ? null : showSingle ? (
         single ? (
-          <div className="relative mt-10 sm:mt-12">
+          <div className="relative mt-6 sm:mt-8">
             <div className="mx-auto max-w-[1100px] px-3 sm:px-0">
               <motion.div
                 className="relative"
@@ -346,39 +385,30 @@ export default function StorySection({
                 viewport={{ once: true, margin: "-120px" }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
               >
-                {/* ✅ just the image with rounded border (no outer frame/padding) */}
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_26px_90px_-65px_rgba(0,0,0,0.55)]">
-                  <div className="relative aspect-[2.35/1] sm:aspect-[2.5/1] bg-muted/25">
+                {/* ✅ Render single media natively without padding/borders */}
+                <div className="relative overflow-hidden rounded-[2rem] shadow-[0_30px_100px_-50px_rgba(255,255,255,0.03)]">
+                  <div className="relative flex justify-center items-center w-full">
                     {single.kind === "video" ? (
-                      <video
-                        className={"h-full w-full " + fitClass(single.fit)}
-                        src={single.src}
-                        poster={single.poster}
-                        preload="metadata"
-                        muted
-                        playsInline
-                        loop
-                        autoPlay
-                      />
+                      <LazyVideo src={single.src} poster={single.poster} fit={single.fit} />
                     ) : (
                       <img
                         src={single.src}
                         alt={single.alt}
-                        className={"h-full w-full " + fitClass(single.fit)}
+                        className="h-auto w-full max-h-[80vh] object-cover"
                         loading="lazy"
                         draggable={false}
                       />
                     )}
                   </div>
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/14 via-transparent to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
                 </div>
               </motion.div>
             </div>
           </div>
         ) : null
       ) : showRail && cards.length ? (
-        <div className="relative mt-14 sm:mt-16">
+        <div className="relative mt-6 sm:mt-8">
           <div className="relative overflow-x-hidden">
             <div className="relative left-1/2 w-screen -translate-x-1/2">
               <div
@@ -440,16 +470,7 @@ export default function StorySection({
                           <div className="relative rounded-2xl border border-border bg-card overflow-hidden shadow-[0_22px_70px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-200 hover:shadow-[0_26px_86px_-58px_rgba(0,0,0,0.85)]">
                             <div className="relative aspect-[16/9] bg-muted/35">
                               {c.kind === "video" ? (
-                                <video
-                                  className={`h-full w-full ${fitClass(c.fit)}`}
-                                  src={c.src}
-                                  poster={c.poster}
-                                  preload="metadata"
-                                  muted
-                                  playsInline
-                                  loop
-                                  autoPlay
-                                />
+                                <LazyVideo src={c.src} poster={c.poster} fit={c.fit} />
                               ) : (
                                 <img
                                   src={c.src}
@@ -459,27 +480,6 @@ export default function StorySection({
                                   draggable={false}
                                 />
                               )}
-
-                              {/* optional play hint */}
-                              {c.kind === "video" ? (
-                                <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/10 dark:bg-black/35">
-                                  <div className="h-12 w-12 rounded-full bg-white/90 dark:bg-black/70 border border-black/10 dark:border-white/15 shadow-md grid place-items-center">
-                                    <svg
-                                      width="18"
-                                      height="18"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      aria-hidden="true"
-                                      className="text-black dark:text-white"
-                                    >
-                                      <path
-                                        d="M9 18V6l12 6-12 6Z"
-                                        fill="currentColor"
-                                      />
-                                    </svg>
-                                  </div>
-                                </div>
-                              ) : null}
                             </div>
 
                             <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/14 via-transparent to-transparent" />

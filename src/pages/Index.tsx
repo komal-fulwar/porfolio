@@ -13,82 +13,196 @@ const Index = () => {
       {/* JOURNEY (no "Story" heading; only Journey) */}
       <section id="story" className="bc-section">
         <div className="bc-container">
-          <div className="mb-10 sm:mb-12 text-center">
-            <div className="inline-flex mb-5">
-              <span className="bc-pill-dark">Journey</span>
-            </div>
-          </div>
 
-          {/* ✅ Newest first: 2025 → 2024 → 2022-23 → 2021 → 2020 */}
-          <div className="space-y-16 sm:space-y-20">
+
+          {/* ✅ Newest first: 2026 → 2025 → 2024 → 2022-23 → 2021 → 2020 */}
+          <div className="space-y-10 sm:space-y-14">
+            {/* 2026 */}
+            <StorySection
+              id="story-2026"
+              index={0}
+              type="green"
+              year="2026"
+              title="Marketing Lead - Bento.fun"
+              subtitle="Apr 2026 - Sep 2026"
+              description="Owned every non-engineering function for Bento.fun - scaling organic social distribution, building automated AI video workflows, running paid acquisition, and driving developer adoption through IRL events."
+              media={[
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_1.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2089246399120699392/img/FIeWY7GS5qw-xrGg.jpg",
+                  alt: "Bento.fun - Premier League Announcement",
+                  href: "https://x.com/Bentodotfun/status/2089246532247937153?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_2.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2088284839028076544/img/myA1EWaY7S6gxL8z.jpg",
+                  alt: "Bento.fun - Football Season Launch",
+                  href: "https://x.com/Bentodotfun/status/2088284877066252769?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_3.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2084307588204974080/img/8zRhIAFDTlO7hDwy.jpg",
+                  alt: "Bento.fun - Last Week in Sports Recap",
+                  href: "https://x.com/Bentodotfun/status/2084314258452685133?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_4.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2084243235359309825/img/3NckFQ8WdlO77vee.jpg",
+                  alt: "Bento.fun - Story of a Legend",
+                  href: "https://x.com/Bentodotfun/status/2084243357027463514?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_5.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2079923843519700992/img/4vwIr4PecYuqvDbJ.jpg",
+                  alt: "Bento.fun - Build on Bento Hackathon Highlights",
+                  href: "https://x.com/Bentodotfun/status/2079924209124614315?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_6.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2079250588295155712/img/fqwh6dE_rxubEyIn.jpg",
+                  alt: "Bento.fun - World Cup Final Recap",
+                  href: "https://x.com/Bentodotfun/status/2079250705953763557?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_7.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2078917665759092736/img/t7H2s2NQnz0HLNYH.jpg",
+                  alt: "Bento.fun - Finals Night Live Event",
+                  href: "https://x.com/Bentodotfun/status/2078917790925492489?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_8.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2077000439707619328/img/I9MO7XVdLU8KxSMI.jpg",
+                  alt: "Bento.fun - Bangalore Hackathon Announcement",
+                  href: "https://x.com/Bentodotfun/status/2077000507592503437?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_9.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2075629546070736896/img/8Fn2Yi8mcEtJT5qq.jpg",
+                  alt: "Bento.fun - FIFA Watch Party Recap",
+                  href: "https://x.com/Bentodotfun/status/2075629625112506879?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_10.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2074750041819111425/img/ofj56MDQgKRQFInQ.jpg",
+                  alt: "Bento.fun - FIFAMAXXING Bengaluru Event",
+                  href: "https://x.com/Bentodotfun/status/2074750116972695995?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_11.mp4",
+                  poster: "https://pbs.twimg.com/ext_tw_video_thumb/2064991809215004672/pu/img/ae_IClPXpK0sNGgs.jpg",
+                  alt: "Bento.fun - Bento Beta LIVE on BNB Chain",
+                  href: "https://x.com/Bentodotfun/status/2064991880128217388?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_12.mp4",
+                  poster: "https://pbs.twimg.com/ext_tw_video_thumb/2063252728189800448/pu/img/ONe_tsEH3Jxr_0xF.jpg",
+                  alt: "Bento.fun - French Open Final Spotlight",
+                  href: "https://x.com/Bentodotfun/status/2063252940413116500?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_13.mp4",
+                  poster: "https://pbs.twimg.com/ext_tw_video_thumb/2061883334473793536/pu/img/Z9k8iwAXsmr30Vgz.jpg",
+                  alt: "Bento.fun - NBA Finals Prediction Packs",
+                  href: "https://x.com/Bentodotfun/status/2061883370980925503?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_14.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2088682099478069249/img/WFVLZATkTBlTbTu-.jpg",
+                  alt: "Anshita Soni - Football Season Kickoff Video",
+                  href: "https://x.com/anshitaksoni/status/2088682164703666635?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_15.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2070941172370231296/img/nbZftK38-2V6jZx_.jpg",
+                  alt: "Anshita Soni - Bento.fun Marketing Reel",
+                  href: "https://x.com/anshitaksoni/status/2070941300053152061?s=20",
+                },
+                {
+                  kind: "video",
+                  src: "/bento/bento_video_16.mp4",
+                  poster: "https://pbs.twimg.com/amplify_video_thumb/2079204930024321025/img/wn_fqKwDpDOjKjEc.jpg",
+                  alt: "Abhitej - Bento SDK Overview Video",
+                  href: "https://x.com/abhitejxyz/status/2079205266092900680?s=20",
+                },
+              ]}
+              content={[
+                "As the Marketing Lead for Bento.fun, a sports prediction markets platform, I operated as a one-person growth engine. I owned every non-engineering function - from brand and content strategy to paid acquisition and on-the-ground developer relations.",
+                "### The 17-Million View Distribution Engine",
+                "I single-handedly built and scaled an automated AI video studio using Higgsfield, HeyGen, ElevenLabs, and VEED. By owning the entire pipeline - scripting, AI voiceovers, visual generation, and final edits - I turned organic social into Bento’s primary acquisition channel. The result? Over 15M+ views on Instagram, 2M+ on Facebook, and 300K+ on Threads, establishing a massive footprint with zero agency support.",
+                "### Full-Funnel Growth & Community Engagement",
+                "I ran targeted paid campaigns, built partnerships with major sports fan communities, and personally conducted user feedback calls that directly shaped our product roadmap.",
+                "### Driving Developer Adoption IRL",
+                "To accelerate adoption for the Bento SDK, I took the brand offline. I conceptualized and executed a FIFA IRL pop-up in Bangalore and hosted a major hackathon for SDK adoption."
+              ]}
+            />
+
             {/* 2025 */}
             <StorySection
               id="story-2025"
-              index={0}
+              index={1}
               type="green"
               year="2025"
-              title="India Marketing Lead — Aethir"
-              subtitle="India Marketing Lead at Aethir (Feb 2025 - Jan 2026)"
-              description="My transition into full regional ownership — I built Aethir India from the ground up across positioning, GTM, community, partnerships, KOL strategy, content, and IRL presence."
+              title="India Marketing Lead - Aethir"
+              subtitle="Feb 2025 - Jan 2026"
+              description="My transition into full regional ownership - I built Aethir India from the ground up across positioning, GTM, community, partnerships, KOL strategy, content, and IRL presence."
               mediaVariant="rail"
               media={[
                 {
                   kind: "video",
                   src: "/video1.mp4",
                   poster: "/videos/2025-1.jpg",
-                  alt: "Aethir — highlight video 1",
+                  alt: "Aethir - highlight video 1",
                   label: "Video",
                   href: "https://x.com/AethirIndia/status/1937520550014018030?s=20",
                 },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A7445c4de-f61d-44e4-8635-180bf1abcb40%3A6f2732e4-0fdd-43f7-a672-512ad033c0ba.jpeg?table=block&id=2ead6181-d1a7-8040-ac35-f53ed1a13864&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Aethir — moment 1",
-                  label: "Moment",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3Aaf638f40-aff2-4fe0-a88e-72e81a2a2442%3A70b1da2d-3a89-4c50-ae35-5e9cfca5b9d5.jpeg?table=block&id=2ead6181-d1a7-80bf-997f-c4a0c714ab1a&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Aethir — moment 2",
-                  label: "Moment",
-                },
+
                 {
                   kind: "video",
                   src: "/video2.mp4",
                   poster: "/videos/2025-1.jpg",
-                  alt: "Aethir — highlight video 2",
+                  alt: "Aethir - highlight video 2",
                   label: "Video",
                   href: "https://x.com/AethirIndia/status/2003155130477347102?s=20",
                 },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A548bd38e-ef9d-4a94-8ba4-0dbc2472ae6c%3A402de0ba-9c38-4307-a6c2-188cb75f8222.jpeg?table=block&id=2ead6181-d1a7-801e-9201-e19a4d64e9b8&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Aethir — moment 3",
-                  label: "Moment",
-                },
+
                 {
                   kind: "video",
                   src: "/video3.mp4",
                   poster: "/videos/2025-1.jpg",
-                  alt: "Aethir — highlight video 3",
+                  alt: "Aethir - highlight video 3",
                   label: "Video",
                   href: "https://x.com/AethirIndia/status/1969011434886398426?s=20",
                 },
-                { kind: "image", src: "/1.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/2.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/3.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/4.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/5.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/6.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/7.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/8.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/9.jpeg", alt: "Aethir — moment", label: "Moment" },
-                { kind: "image", src: "/10.jpeg", alt: "Aethir — moment", label: "Moment" },
+                { kind: "image", src: "/1.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/2.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/3.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/4.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/5.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/6.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/7.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/8.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/9.jpeg", alt: "Aethir - moment", label: "Moment" },
+                { kind: "image", src: "/10.jpeg", alt: "Aethir - moment", label: "Moment" },
               ]}
               content={[
                 "India Marketing Lead at Aethir (Feb 2025 - Jan 2026)",
-                "My time at Aethir marked my transition into full regional ownership. As India Marketing Lead, I built Aethir India from the ground up — owning everything from positioning and GTM to community, content, partnerships, KOL strategy, and IRL presence.",
-                "The goal was simple but ambitious: make Aethir a credible, visible, and trusted name in India's AI, compute, DePIN, and Web3 ecosystem. I focused on building long-term ecosystem relationships first — knowing that brand trust, adoption, and B2B opportunities would follow.",
+                "My time at Aethir marked my transition into full regional ownership. As India Marketing Lead, I built Aethir India from the ground up - owning everything from positioning and GTM to community, content, partnerships, KOL strategy, and IRL presence.",
+                "The goal was simple but ambitious: make Aethir a credible, visible, and trusted name in India's AI, compute, DePIN, and Web3 ecosystem. I focused on building long-term ecosystem relationships first - knowing that brand trust, adoption, and B2B opportunities would follow.",
                 "### IRL & On-Ground Presence",
                 "I designed and led Aethir India's IRL strategy with a strong focus on relationship-building and long-term ecosystem value. I conceptualized and executed the “AI for Bharat” tour, establishing Aethir's presence across major Tier-1 cities in India.",
                 "Through curated speaker lineups, focused community onboarding, and partner-first execution, the tour generated 150K+ impressions organically and opened early-stage pipelines for B2B collaborations, ecosystem partnerships, government incubators, and institutional stakeholders.",
@@ -110,59 +224,42 @@ const Index = () => {
             {/* 2024 */}
             <StorySection
               id="story-2024"
-              index={1}
+              index={2}
               type="green"
               year="2024"
-              title="Head of Growth & Ecosystem — Capx AI"
-              subtitle="Head of Growth and Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)"
-              description="A shift from community execution to owning growth and ecosystem strategy end-to-end — scaling Capx Collective into a global support system for Web3 and AI builders."
+              title="Head of Growth & Ecosystem - Capx AI"
+              subtitle="Dec 2023 - Jan 2025"
+              description="A shift from community execution to owning growth and ecosystem strategy end-to-end - scaling Capx Collective into a global support system for Web3 and AI builders."
               mediaVariant="rail"
               media={[
                 {
                   kind: "video",
                   src: "/video4.mp4",
                   poster: "/videos/2024-1.jpg",
-                  alt: "Capx — highlight video 1",
+                  alt: "Capx - highlight video 1",
                   label: "Video",
                   href: "https://x.com/anshitaksoni/status/1855996325634187428?s=20",
                 },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3Ac4af0139-51bb-4687-904f-9c2c4ac1035c%3AGavb9waaAAQP8Sv.jpeg?table=block&id=2ead6181-d1a7-8055-acd1-e85896f3a271&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 1",
-                  label: "Moment",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A23ba3d68-a760-4206-be88-b4fae28bcd1a%3AGNh1dAjbYAEAn-p.jpeg?table=block&id=2ead6181-d1a7-80b9-856e-dac90dc91eed&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 2",
-                  label: "Moment",
-                },
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A08ab5e2f-75c8-4cf9-9321-6af381bc2ec3%3AGY5YSO8XcAApJ87.jpeg?table=block&id=2ead6181-d1a7-8095-a81e-edd303a761c0&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Capx — moment 3",
-                  label: "Moment",
-                },
+
                 {
                   kind: "video",
                   src: "/video5.mp4",
                   poster: "/videos/2024-2.jpg",
-                  alt: "Capx — highlight video 2",
+                  alt: "Capx - highlight video 2",
                   label: "Video",
                   href: "https://x.com/CapxCollective/status/1772512003564683510?s=20",
                 },
                 {
                   kind: "image",
                   src: "https://pbs.twimg.com/media/GbnMs6raAAANst7?format=jpg&name=medium",
-                  alt: "Capx — moment 4",
+                  alt: "Capx - moment 4",
                   label: "Moment",
                   href: "https://x.com/CapxCollective/status/1772512003564683510?s=20",
                 },
               ]}
               content={[
                 "Head of Growth and Ecosystem at Capx AI and Capx Collective (Dec 2023 - Jan 2025)",
-                "My time at Capx AI marked a shift from community execution to owning growth and ecosystem strategy end-to-end. As Head of Growth and Ecosystem, I scaled Capx Collective — the community arm of Capx AI — turning it into a global support system for Web3 and AI builders.",
+                "My time at Capx AI marked a shift from community execution to owning growth and ecosystem strategy end-to-end. As Head of Growth and Ecosystem, I scaled Capx Collective - the community arm of Capx AI - turning it into a global support system for Web3 and AI builders.",
                 "What started as an idea quickly grew into a multi-country ecosystem. I focused on creating real value for builders through programs, events, and partnerships while ensuring everything tied back to Capx AI's long-term growth and developer adoption.",
               ]}
               highlights={[
@@ -180,30 +277,22 @@ const Index = () => {
             {/* 2022-2023 */}
             <StorySection
               id="story-2022-23"
-              index={2}
+              index={3}
               type="green"
               year="2022-2023"
-              title="Community Evangelist & Partnerships — Lumos Labs"
-              subtitle="Community Evangelist and Partnerships Associate at Lumos Labs (May 2022 - Dec 2023)"
-              description="The transition from building programs to scaling communities at speed — turning interest into long-term participation through ambassadors, hackathons, events, and partnerships."
-              mediaVariant="single"
-              media={[
-                {
-                  kind: "image",
-                  src: "https://www.notion.so/image/attachment%3A3641fc67-3742-4f1a-8aa2-cbec6d98f5a4%3AI_am_Anshita_Soni_and_here_are_all_your_answers_(1).png?table=block&id=2ead6181-d1a7-802e-ad19-e836c4d7dc51&spaceId=e40a6633-b9f4-410a-a045-757a2508c818&width=1420&userId=&cache=v2",
-                  alt: "Lumos Labs — community & partnerships",
-                  fit: "contain",
-                },
-              ]}
+              title="Community Evangelist & Partnerships - Lumos Labs"
+              subtitle="May 2022 - Dec 2023"
+              description="The transition from building programs to scaling communities at speed - turning interest into long-term participation through ambassadors, hackathons, events, and partnerships."
+              mediaVariant="none"
               content={[
                 "Community Evangelist and Partnerships Associate at Lumos Labs (May 2022 - December 2023)",
-                "My time at Lumos Labs marked the transition from building programs to scaling communities at speed. As a Community Evangelist and Partnerships Associate, I worked at the intersection of students, developers, and Web3 ecosystems — turning interest into long-term participation.",
-                "I led initiatives that helped Lumos grow its grassroots presence across India, from campus ambassadors to large-scale hackathons. This phase taught me how to manage communities across platforms, collaborate with partners, and keep momentum alive through consistent engagement — both online and on the ground.",
+                "My time at Lumos Labs marked the transition from building programs to scaling communities at speed. As a Community Evangelist and Partnerships Associate, I worked at the intersection of students, developers, and Web3 ecosystems - turning interest into long-term participation.",
+                "I led initiatives that helped Lumos grow its grassroots presence across India, from campus ambassadors to large-scale hackathons. This phase taught me how to manage communities across platforms, collaborate with partners, and keep momentum alive through consistent engagement - both online and on the ground.",
               ]}
               highlights={[
-                "Hosted BUILD FOR WEB3 SUMMIT — a large-scale 1-day conference in Bangalore with best-in-industry speakers and partners",
+                "Hosted BUILD FOR WEB3 SUMMIT - a large-scale 1-day conference in Bangalore with best-in-industry speakers and partners",
                 "Led the Lumos Wizard Program (campus ambassadors): designed structure, incentives, and workflows; managed ambassadors end-to-end",
-                "Managed HACK DELHI — a 24-hour offline Web3 hackathon with 200+ builders",
+                "Managed HACK DELHI - a 24-hour offline Web3 hackathon with 200+ builders",
                 "Planned and executed 70+ offline and online events across India",
                 "Built and executed partnerships with developer communities, student groups, DAOs, and institutes",
               ]}
@@ -212,37 +301,37 @@ const Index = () => {
             {/* 2021 */}
             <StorySection
               id="story-2021"
-              index={3}
+              index={4}
               type="green"
               year="2021"
-              title="Program Manager — Web3Camp (GirlScript)"
-              subtitle="Program Manager Web3camp at GirlScript Foundation (Sept 2021 - Nov 2022)"
-              description="My first real lesson in communities, events, and scaling education — from a social internship to running Web3Camp backed by major ecosystems."
+              title="Program Manager - Web3Camp (GirlScript)"
+              subtitle="Sept 2021 - Nov 2022"
+              description="My first real lesson in communities, events, and scaling education - from a social internship to running Web3Camp backed by major ecosystems."
               mediaVariant="none"
               content={[
                 "Program Manager Web3camp at GirlScript Foundation (Sept 2021 - Nov 2022)",
-                "I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible to everyone. At the time, I didn’t have a grand plan — I just knew I wanted to help people find their way into tech the way I was trying to find mine.",
+                "I began my work journey at GirlScript Foundation, a non-profit focused on making tech education accessible to everyone. At the time, I didn’t have a grand plan - I just knew I wanted to help people find their way into tech the way I was trying to find mine.",
                 "What started as a social media internship slowly turned into my first real lesson in communities, events, and the Web2 world. Over time, I grew into the role of Program Manager for Web3Camp, a global Web3 bootcamp that would go on to impact thousands of learners across India.",
-                "Web3Camp became my first experience of managing something backed by leading Web3 ecosystems — Polygon, The Graph, Nervos, Sino Global Capital, EPNS. I learned how to design programs, tell stories that attract the right partners, and scale education through community-led growth.",
+                "Web3Camp became my first experience of managing something backed by leading Web3 ecosystems - Polygon, The Graph, Nervos, Sino Global Capital, EPNS. I learned how to design programs, tell stories that attract the right partners, and scale education through community-led growth.",
               ]}
             />
 
             {/* 2020 */}
             <StorySection
               id="story-2020"
-              index={4}
+              index={5}
               type="green"
               year="2020"
-              title="The Spark — Curiosity in lockdown"
+              title="The Spark - Curiosity in lockdown"
               subtitle="Starting from zero in a Tier-2 city"
-              description="At 16 during COVID lockdown in Nagpur, I had no exposure to startups or tech careers — but curiosity pulled me into building, learning, and finding direction."
+              description="At 16 during COVID lockdown in Nagpur, I had no exposure to startups or tech careers - but curiosity pulled me into building, learning, and finding direction."
               mediaVariant="none"
               content={[
-                "At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra — a Tier-2 city — with no exposure to startups, business jargon, or tech careers. I didn’t know what a pitch deck was, what “skills” meant in a professional sense, or how ideas were supposed to turn into companies.",
+                "At 16, in the middle of the COVID lockdown, I was a student in a regular junior college in Nagpur, Maharashtra - a Tier-2 city - with no exposure to startups, business jargon, or tech careers. I didn’t know what a pitch deck was, what “skills” meant in a professional sense, or how ideas were supposed to turn into companies.",
                 "What I did have was curiosity!",
-                "I was deeply interested in identifying problems and trying to solve them, and I admired people who built things — entrepreneurs, public speakers, content creators, and women in tech. During the lockdown, a simple tech app idea pushed me to ask a question that changed everything: How do ideas actually become real?",
-                "That question led me into the world of startups, business, marketing, and sales — first as a learner, then as a doer. I taught myself skills by experimenting, building, and failing fast: content creation (design, writing, video), cold emailing, public speaking, operations, marketing, and business development.",
-                "That same early idea eventually earned me my first investment proposal of $200,000 at the age of 16. I didn’t end up pursuing the idea — but I found something more valuable: direction.",
+                "I was deeply interested in identifying problems and trying to solve them, and I admired people who built things - entrepreneurs, public speakers, content creators, and women in tech. During the lockdown, a simple tech app idea pushed me to ask a question that changed everything: How do ideas actually become real?",
+                "That question led me into the world of startups, business, marketing, and sales - first as a learner, then as a doer. I taught myself skills by experimenting, building, and failing fast: content creation (design, writing, video), cold emailing, public speaking, operations, marketing, and business development.",
+                "That same early idea eventually earned me my first investment proposal of $200,000 at the age of 16. I didn’t end up pursuing the idea - but I found something more valuable: direction.",
                 "I realized I wanted to be close to builders, ideas, and ecosystems. And from that moment on, my journey into tech, communities, and onchain ecosystems truly began.",
               ]}
               highlights={["First investment proposal of $200,000 at age 16"]}

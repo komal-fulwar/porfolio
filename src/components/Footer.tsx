@@ -34,24 +34,12 @@ const Footer = () => {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
             <div className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[720px] -translate-x-1/2 rounded-full blur-3xl opacity-35 bg-[hsl(var(--candle-green))]/18" />
 
-            <div className="relative z-10">
-              <div className="inline-flex mb-4">
-                <span className="bc-pill-dark">Connect</span>
-              </div>
-
-              <h3 className="text-2xl sm:text-3xl font-semibold">Ready to connect?</h3>
-              <p className="mt-3 text-muted-foreground max-w-md mx-auto">
-                Collaborate, chat about ideas, or just say hi — I’m always up for a good conversation.
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full gap-6 mt-4">
+              <p className="text-sm sm:text-base text-muted-foreground text-center md:text-left max-w-lg">
+                Collaborate, chat about ideas, or just say hi - I’m always up for a good conversation.
               </p>
 
-              {/* ✅ Only Telegram CTA */}
-              <div className="mt-6 flex justify-center gap-3 flex-wrap">
-                <Button className="bc-hoverlift bc-hovershadow" onClick={openTelegram}>
-                  Message Me
-                </Button>
-              </div>
-
-              <div className="mt-10 flex items-center justify-center gap-3 flex-wrap">
+              <div className="flex items-center gap-3 flex-wrap shrink-0 justify-center md:justify-end">
                 {socialLinks.map((link) => {
                   const Icon = link.icon;
                   return (
@@ -75,19 +63,14 @@ const Footer = () => {
                   );
                 })}
               </div>
+            </div>
 
-              <div className="mt-10 pt-6 border-t border-border text-xs text-muted-foreground space-y-2">
-                <div>
-                  Made with{" "}
-                  <span className="font-medium text-[hsl(var(--candle-green))]">💚</span> and a little bit of{" "}
-                  <span className="font-medium text-[hsl(var(--candle-red))]">📉</span> by{" "}
-                  <span className="font-medium text-foreground">Anshita</span>.
-                </div>
-
-               
-                <div className="pt-2 text-[11px] text-muted-foreground/80">
-                  © {new Date().getFullYear()} Anshita — Built like a chart: steady, honest, trending up.
-                </div>
+            <div className="mt-16 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between w-full gap-4 text-xs text-muted-foreground">
+              <div className="text-center md:text-left">
+                Made with <span className="font-medium text-foreground">conviction</span> and a little bit of <span className="font-medium text-foreground">lessons</span> by <span className="font-medium text-foreground">Anshita</span>. 
+              </div>
+              <div className="text-center md:text-right">
+                © {new Date().getFullYear()} Anshita - Built like a chart: steady, honest, trending up.
               </div>
             </div>
           </motion.div>

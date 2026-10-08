@@ -187,33 +187,19 @@ const SkillsSection = () => {
             <div className="grid lg:grid-cols-2 gap-10 items-stretch">
               {/* LEFT */}
               <div className="space-y-5">
-                <h2 className="text-[34px] sm:text-[40px] lg:text-[46px] font-bold leading-[1.08] tracking-tight text-foreground">
+                <h2 className="text-[40px] sm:text-[46px] lg:text-[52px] font-normal leading-tight tracking-tight text-foreground">
                   GM, I’m{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-500 to-pink-500">
+                  <span className="text-white italic">
                     Anshita
-                  </span>{" "}
-                  👋
+                  </span>
                 </h2>
 
-                <div className="space-y-4 text-[14px] sm:text-[15px] text-muted-foreground leading-relaxed max-w-xl">
+                <div className="space-y-4 text-base sm:text-lg text-white/70 leading-relaxed max-w-xl font-light">
                   <p>
-                    I build communities, narratives, and GTM strategy for Web3 and AI projects.
-                    <br />
-                    (I also lose money on memecoins, purely for research, of course)
+                    I build communities, narratives, and GTM strategies for Web3 and AI projects. 
+                    (I also lose money on memecoins, purely for research)
                   </p>
 
-                  <p>
-                    With <span className="font-semibold text-foreground/90">4+ years</span> of living life onchain, I’ve
-                    helped projects go from “early” to “everywhere” by blending content, community, partnerships, and
-                    marketing. My career trajectory looks a lot like a crypto chart - volatile, educational, and
-                    surprisingly high-signal powered by a jack-of-all-trades mindset.
-                  </p>
-
-                  <p>
-                    Since the last <span className="font-semibold text-foreground/90">2 years</span>, I’ve been deep in
-                    the Web3 × AI world - designing GTM and driving adoption where builders, founders, and ecosystems
-                    come together to build what’s next.
-                  </p>
                 </div>
 
                 <div className="pt-1">
@@ -242,71 +228,22 @@ const SkillsSection = () => {
               </div>
 
               {/* RIGHT */}
-              <div className="relative flex">
-                {/* This wrapper makes right side vertically match and center with left */}
-                <div className="w-full flex items-center">
-                  {/* MOBILE: grid image cards */}
-                  <div className="lg:hidden w-full">
-                    <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      {skillCards.map((card, idx) => (
-                        <ImageCard
-                          key={idx}
-                          card={card}
-                          compact
-                          style={{
-                            transform: `rotate(${mobileRot[idx % mobileRot.length]}deg)`,
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* DESKTOP: overlap scene, less height + less bottom gap */}
-                  <div className="hidden lg:block w-full">
-                    <div
-                      ref={deckRef}
-                      className="relative w-full overflow-hidden rounded-3xl"
-                      style={{
-                        height: 470, // ✅ reduced (was feeling too tall)
-                      }}
-                    >
-                      {/* lighter panel so it doesn’t look like a big box */}
-                      <div className="absolute inset-0 rounded-3xl border border-black/5 dark:border-white/10 bg-white/30 dark:bg-white/5 backdrop-blur-md" />
-
-                      {/* center the scene inside the panel (reduces bottom gap) */}
-                      <div
-                        className="absolute left-1/2 top-1/2"
-                        style={{
-                          width: BASE_W,
-                          height: BASE_H,
-                          transform: "translate(-50%, -50%) scale(0.92)", // ✅ less big, tighter fit
-                          transformOrigin: "center",
-                        }}
-                      >
-                        {skillCards.map((card, i) => {
-                          const isHovered = hovered === i;
-                          return (
-                            <ImageCard
-                              key={i}
-                              card={card}
-                              active={isHovered}
-                              hoverable
-                              onEnter={() => setHovered(i)}
-                              onLeave={() => setHovered(null)}
-                              style={{
-                                position: "absolute",
-                                top: card.pos.top,
-                                left: card.pos.left,
-                                width: 330,
-                                transform: `rotate(${card.rotation}deg)`,
-                                zIndex: isHovered ? 99 : card.z,
-                              }}
-                            />
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
+              <div className="relative flex justify-center items-center w-full">
+                <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 place-items-center">
+                  {skillCards.map((card, idx) => {
+                    const isHovered = hovered === idx;
+                    return (
+                      <ImageCard
+                        key={idx}
+                        card={card}
+                        compact
+                        active={isHovered}
+                        hoverable
+                        onEnter={() => setHovered(idx)}
+                        onLeave={() => setHovered(null)}
+                      />
+                    );
+                  })}
                 </div>
               </div>
               {/* end right */}

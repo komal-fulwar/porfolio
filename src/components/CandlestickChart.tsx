@@ -30,7 +30,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 1.35,
     title: "Spark of curiosity",
     description:
-      "A simple tech idea during COVID sparked my curiosity toward startups, problem-solving, and technology — the beginning of my journey.",
+      "A simple tech idea during COVID sparked my curiosity toward startups, problem-solving, and technology - the beginning of my journey.",
   },
   {
     year: "2020",
@@ -39,7 +39,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 1.35,
     title: "Starting From Zero in a Tier-2 City",
     description:
-      "Had ideas and ambition but lacked execution frameworks, technical knowledge, and direction — figuring everything out alone from scratch.",
+      "Had ideas and ambition but lacked execution frameworks, technical knowledge, and direction - figuring everything out alone from scratch.",
   },
 
   // 2021
@@ -59,7 +59,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 2.1,
     title: "Too Many Paths, No Map",
     description:
-      "While executing and managing large-scale initiatives, I was personally unsure about long-term direction — without the right mentors to navigate choices.",
+      "While executing and managing large-scale initiatives, I was personally unsure about long-term direction - without the right mentors to navigate choices.",
   },
 
   // 2022-23
@@ -79,7 +79,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 3.05,
     title: "Bull Dreams, Bear Lessons",
     description:
-      "Bull to bear taught hard lessons — watching narratives rise and disappear overnight was unsettling, but it taught me to build with conviction.",
+      "Bull to bear taught hard lessons - watching narratives rise and disappear overnight was unsettling, but it taught me to build with conviction.",
   },
 
   // 2024
@@ -90,7 +90,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 4.05,
     title: "Going Global with Capx AI",
     description:
-      "Led growth and ecosystem efforts at Capx AI — owning ideation → builder outreach → operations → demo day, while continuously upskilling in AI.",
+      "Led growth and ecosystem efforts at Capx AI - owning ideation → builder outreach → operations → demo day, while continuously upskilling in AI.",
   },
   {
     year: "2024",
@@ -110,7 +110,7 @@ export const CANDLE_DATA: Candle[] = [
     level: 4.2,
     title: "COVID",
     description:
-      "Contracted COVID during peak execution — forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
+      "Contracted COVID during peak execution - forcing a temporary slowdown and a rethink on pace, health, and sustainability.",
   },
   {
     year: "2025",
@@ -119,7 +119,27 @@ export const CANDLE_DATA: Candle[] = [
     level: 4.2,
     title: "deAI era with Aethir",
     description:
-      "Built Aethir India end-to-end across brand, content, community, partnerships, IRL — driving early B2B, ecosystem, and institutional momentum in the deAI era.",
+      "Built Aethir India end-to-end across brand, content, community, partnerships, IRL - driving early B2B, ecosystem, and institutional momentum in the deAI era.",
+  },
+
+  // 2026
+  {
+    year: "2026",
+    type: "up",
+    intensity: 65,
+    level: 4.5,
+    title: "Marketing Lead at Bento.fun",
+    description:
+      "Owned every non-engineering function at Bento.fun - sports prediction markets platform, 15M+ organic views, AI video studio, IRL hackathons & FIFA pop-up.",
+  },
+  {
+    year: "2026",
+    type: "down",
+    intensity: 45,
+    level: 4.5,
+    title: "Sunsetting Bento",
+    description:
+      "My journey with Bento ended, but it was full of incredible experiments. And now, I truly love sports!",
   },
 ];
 
